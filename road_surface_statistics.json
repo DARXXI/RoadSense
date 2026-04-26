@@ -1,0 +1,31 @@
+{
+  "road_pixels": 182562,
+  "road_percentage": 18.5711669921875,
+  "surfaces": {
+    "асфальт/гравий": {
+      "pixels": 164731,
+      "percentage": 16.757303873697918,
+      "road_percentage": 90.23290717673996
+    },
+    "брусчатка": {
+      "pixels": 492,
+      "percentage": 0.05004882812499999,
+      "road_percentage": 0.2694974857856509
+    },
+    "грунт/грязь": {
+      "pixels": 12,
+      "percentage": 0.001220703125,
+      "road_percentage": 0.00657310940940612
+    },
+    "песок": {
+      "pixels": 2174,
+      "percentage": 0.22115071614583334,
+      "road_percentage": 1.1908283213374087
+    },
+    "неопределено": {
+      "pixels": 15506,
+      "percentage": 1.5773518880208333,
+      "road_percentage": 8.493552875187607
+    }
+  }
+}

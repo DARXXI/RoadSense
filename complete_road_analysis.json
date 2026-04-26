@@ -1,0 +1,36 @@
+{
+  "total_road_percentage": 27.177632649739586,
+  "thoroughfare_percentage": 18.5711669921875,
+  "dead_end_percentage": 8.606465657552082,
+  "total_segments": 1070,
+  "by_surface": {
+    "асфальт/гравий": {
+      "area": 54579.5,
+      "percentage": 5.552113850911458,
+      "length": 11230.0,
+      "avg_width": 4.2470011672035595,
+      "num_segments": 488
+    },
+    "брусчатка": {
+      "area": 77449.5,
+      "percentage": 7.878570556640625,
+      "length": 13158.0,
+      "avg_width": 4.840878521213095,
+      "num_segments": 262
+    },
+    "грунт/грязь": {
+      "area": 12415.0,
+      "percentage": 1.2629191080729165,
+      "length": 2907.0,
+      "avg_width": 5.227301931951151,
+      "num_segments": 251
+    },
+    "песок": {
+      "area": 2285.5,
+      "percentage": 0.23249308268229169,
+      "length": 589.0,
+      "avg_width": 4.850826042285864,
+      "num_segments": 69
+    }
+  }
+}

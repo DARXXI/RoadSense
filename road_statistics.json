@@ -1,0 +1,41 @@
+{
+  "image_size": [
+    768,
+    1280,
+    3
+  ],
+  "total_roads": {
+    "pixels": 267167,
+    "percentage": 27.177632649739586
+  },
+  "through_roads": {
+    "pixels": 182562,
+    "percentage": 18.5711669921875
+  },
+  "dead_ends": {
+    "pixels": 84605,
+    "percentage": 8.606465657552082
+  },
+  "surfaces": {
+    "асфальт/гравий": {
+      "pixels": 28594,
+      "percentage": 2.9087320963541665,
+      "road_percentage": 15.662624204379883
+    },
+    "брусчатка": {
+      "pixels": 111183,
+      "percentage": 11.31011962890625,
+      "road_percentage": 60.901501955500045
+    },
+    "грунт/грязь": {
+      "pixels": 14448,
+      "percentage": 1.4697265625,
+      "road_percentage": 7.914023728924969
+    },
+    "песок": {
+      "pixels": 1817,
+      "percentage": 0.18483479817708334,
+      "road_percentage": 0.9952783164075767
+    }
+  }
+}
