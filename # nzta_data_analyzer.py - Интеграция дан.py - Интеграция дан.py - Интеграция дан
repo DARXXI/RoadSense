@@ -1,0 +1,353 @@
+# nzta_data_analyzer_fixed.py - БЕЗ geopandas
+import requests
+import pandas as pd
+from datetime import datetime, timedelta
+import json
+
+class NZTADataAnalyzer:
+    """Анализатор данных Waka Kotahi (NZTA) - без geopandas"""
+    
+    def __init__(self, api_key=None):
+        self.api_key = api_key
+    
+    def get_crash_data(self, start_date=None, end_date=None, region="Northland"):
+        """
+        Получение данных о ДТП (CAS) - Crash Analysis System
+        Это ключевой источник для вашего анализа!
+        """
+        print(f"\n📥 Загрузка данных CAS для {region}...")
+        
+        # CAS данные доступны через ArcGIS REST API (без ключа)
+        url = "https://services.arcgis.com/GLbijM4lmFhgUqCY/arcgis/rest/services/Crash_Analysis_System_CAS_data_public_view/FeatureServer/0/query"
+        
+        # WHERE clause для фильтрации по региону и дате
+        where_parts = []
+        
+        if region:
+            # Экранируем кавычки для SQL
+            region_escaped = region.replace("'", "''")
+            where_parts.append(f"region = '{region_escaped}'")
+        
+        if start_date:
+            where_parts.append(f"crash_date >= DATE '{start_date}'")
+        
+        if end_date:
+            where_parts.append(f"crash_date <= DATE '{end_date}'")
+        
+        where = " AND ".join(where_parts) if where_parts else "1=1"
+        
+        print(f"   Фильтр: {where}")
+        
+        params = {
+            "where": where,
+            "outFields": "*",
+            "returnGeometry": "true",
+            "f": "geojson",  # GeoJSON формат (не требует geopandas)
+            "resultRecordCount": 1000  # Лимит записей
+        }
+        
+        try:
+            response = requests.get(url, params=params, timeout=30)
+            print(f"   Статус: {response.status_code}")
+            
+            if response.status_code == 200:
+                data = response.json()
+                crashes = []
+                
+                for feature in data.get('features', []):
+                    attrs = feature.get('attributes', {})
+                    geom = feature.get('geometry', {})
+                    coords = geom.get('coordinates', [None, None]) if geom else [None, None]
+                    
+                    # Извлекаем координаты (для GeoJSON они в порядке [lon, lat])
+                    lon = coords[0] if len(coords) > 0 else None
+                    lat = coords[1] if len(coords) > 1 else None
+                    
+                    crash = {
+                        'crash_id': attrs.get('crash_id'),
+                        'date': attrs.get('crash_date'),
+                        'time': attrs.get('crash_time'),
+                        'severity': attrs.get('crash_severity'),
+                        'fatalities': attrs.get('fatal_count', 0),
+                        'serious_injuries': attrs.get('serious_injury_count', 0),
+                        'minor_injuries': attrs.get('minor_injury_count', 0),
+                        'road_conditions': attrs.get('road_conditions'),
+                        'weather_conditions': attrs.get('weather_conditions'),
+                        'light_conditions': attrs.get('light_conditions'),
+                        'speed_limit': attrs.get('speed_limit'),
+                        'road_type': attrs.get('road_type'),
+                        'region': attrs.get('region'),
+                        'lat': lat,
+                        'lon': lon
+                    }
+                    crashes.append(crash)
+                
+                print(f"   ✅ Загружено {len(crashes)} записей")
+                return pd.DataFrame(crashes)
+            else:
+                print(f"   ❌ Ошибка: {response.status_code}")
+                return pd.DataFrame()
+                
+        except Exception as e:
+            print(f"   ❌ Ошибка запроса: {e}")
+            return pd.DataFrame()
+    
+    def get_traffic_counts(self, sensor_id=None, start_date=None, end_date=None):
+        """
+        Получение ежедневных подсчетов трафика (TMS)
+        """
+        print(f"\n📥 Загрузка данных TMS...")
+        
+        # TMS данные через ArcGIS REST
+        url = "https://services.arcgis.com/GLbijM4lmFhgUqCY/arcgis/rest/services/TMS_daily_traffic_counts/FeatureServer/0/query"
+        
+        where_parts = ["1=1"]
+        if sensor_id:
+            where_parts.append(f"sensor_id = '{sensor_id}'")
+        if start_date:
+            where_parts.append(f"count_date >= DATE '{start_date}'")
+        if end_date:
+            where_parts.append(f"count_date <= DATE '{end_date}'")
+        
+        where = " AND ".join(where_parts)
+        
+        params = {
+            "where": where,
+            "outFields": "*",
+            "returnGeometry": "false",
+            "f": "json",
+            "resultRecordCount": 5000
+        }
+        
+        try:
+            response = requests.get(url, params=params, timeout=30)
+            print(f"   Статус: {response.status_code}")
+            
+            if response.status_code == 200:
+                data = response.json()
+                counts = []
+                
+                for feature in data.get('features', []):
+                    attrs = feature.get('attributes', {})
+                    counts.append({
+                        'sensor_id': attrs.get('sensor_id'),
+                        'date': attrs.get('count_date'),
+                        'avg_daily_flow': attrs.get('avg_daily_flow'),
+                        'heavy_vehicle_percent': attrs.get('heavy_vehicle_percentage'),
+                        'days_sampled': attrs.get('days_sampled')
+                    })
+                
+                print(f"   ✅ Загружено {len(counts)} записей")
+                return pd.DataFrame(counts)
+            
+        except Exception as e:
+            print(f"   ❌ Ошибка: {e}")
+        
+        return pd.DataFrame()
+
+
+# ============ АНАЛИЗАТОР С ИНТЕГРАЦИЕЙ ПОГОДЫ ============
+
+class WeatherIntegration:
+    """Интеграция погодных данных для анализа ДТП"""
+    
+    def __init__(self, lat=-35.726, lon=174.320):
+        self.lat = lat
+        self.lon = lon
+    
+    def get_weather_for_date(self, date):
+        """Получение погоды за конкретную дату"""
+        url = "https://archive-api.open-meteo.com/v1/archive"
+        params = {
+            "latitude": self.lat,
+            "longitude": self.lon,
+            "start_date": date,
+            "end_date": date,
+            "daily": ["precipitation_sum", "temperature_2m_max", "wind_speed_10m_max"]
+        }
+        
+        try:
+            response = requests.get(url, params=params, timeout=10)
+            data = response.json()
+            
+            if 'daily' in data and data['daily']:
+                return {
+                    'precipitation': data['daily']['precipitation_sum'][0] or 0,
+                    'temperature': data['daily']['temperature_2m_max'][0] or 0,
+                    'wind_speed': data['daily']['wind_speed_10m_max'][0] or 0
+                }
+        except:
+            pass
+        
+        return {'precipitation': 0, 'temperature': 0, 'wind_speed': 0}
+    
+    def add_weather_to_crashes(self, crashes_df):
+        """Добавляет погодные данные к каждому ДТП"""
+        if crashes_df.empty:
+            return crashes_df
+        
+        print("\n🌤️ Добавление погодных данных к ДТП...")
+        
+        # Получаем уникальные даты
+        unique_dates = crashes_df['date'].unique()
+        
+        weather_cache = {}
+        for date in unique_dates:
+            if date:
+                weather_cache[date] = self.get_weather_for_date(date)
+        
+        # Добавляем погоду в DataFrame
+        def get_weather(date):
+            if date and date in weather_cache:
+                return weather_cache[date]
+            return {'precipitation': 0, 'temperature': 0, 'wind_speed': 0}
+        
+        crashes_df['precipitation'] = crashes_df['date'].apply(lambda d: get_weather(d)['precipitation'])
+        crashes_df['temperature'] = crashes_df['date'].apply(lambda d: get_weather(d)['temperature'])
+        crashes_df['wind_speed'] = crashes_df['date'].apply(lambda d: get_weather(d)['wind_speed'])
+        
+        return crashes_df
+
+
+# ============ ОСНОВНОЙ АНАЛИЗАТОР ============
+
+class RoadSafetyAnalyzer:
+    """Полный анализ безопасности дорог"""
+    
+    def __init__(self):
+        self.nzta = NZTADataAnalyzer()
+        self.weather = WeatherIntegration()
+    
+    def analyze_northland(self, start_date="2024-01-01", end_date="2024-03-31"):
+        """
+        Полный анализ Northland
+        """
+        print("=" * 60)
+        print("🚗 АНАЛИЗ ДОРОЖНОЙ БЕЗОПАСНОСТИ - NORTHLAND")
+        print("=" * 60)
+        
+        # 1. Получаем данные о ДТП
+        crashes_df = self.nzta.get_crash_data(start_date, end_date, region="Northland")
+        
+        if crashes_df.empty:
+            print("\n❌ Нет данных о ДТП для Northland")
+            print("   Пробуем без фильтра региона...")
+            crashes_df = self.nzta.get_crash_data(start_date, end_date, region=None)
+        
+        if crashes_df.empty:
+            print("❌ Не удалось загрузить данные")
+            return None
+        
+        # 2. Добавляем погоду
+        crashes_df = self.weather.add_weather_to_crashes(crashes_df)
+        
+        # 3. Статистика
+        self._print_statistics(crashes_df)
+        
+        # 4. Визуализация
+        self._plot_analysis(crashes_df)
+        
+        # 5. Сохраняем
+        crashes_df.to_csv('northland_crashes_analysis.csv', index=False)
+        print("\n✅ Данные сохранены: northland_crashes_analysis.csv")
+        
+        return crashes_df
+    
+    def _print_statistics(self, df):
+        """Вывод статистики"""
+        print("\n" + "=" * 60)
+        print("📊 СТАТИСТИКА ДТП")
+        print("=" * 60)
+        
+        print(f"\n📅 Период: {df['date'].min()} - {df['date'].max()}")
+        print(f"🚗 Всего ДТП: {len(df)}")
+        print(f"💀 Смертельных: {df['fatalities'].sum()}")
+        print(f"🏥 Тяжелых травм: {df['serious_injuries'].sum()}")
+        print(f"🩹 Легких травм: {df['minor_injuries'].sum()}")
+        
+        # По дням недели
+        df['weekday'] = pd.to_datetime(df['date']).dt.day_name()
+        print("\n📅 По дням недели:")
+        for day, count in df['weekday'].value_counts().items():
+            print(f"   {day}: {count}")
+        
+        # По погоде
+        print("\n🌤️ По погодным условиям:")
+        for weather, count in df['weather_conditions'].value_counts().items():
+            if pd.notna(weather):
+                print(f"   {weather}: {count}")
+    
+    def _plot_analysis(self, df):
+        """Визуализация"""
+        import matplotlib.pyplot as plt
+        
+        fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+        
+        # 1. ДТП по дням недели
+        day_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        day_counts = df['weekday'].value_counts()
+        day_counts = day_counts.reindex([d for d in day_order if d in day_counts.index])
+        
+        axes[0, 0].bar(day_counts.index, day_counts.values, color='coral')
+        axes[0, 0].set_title('ДТП по дням недели')
+        axes[0, 0].tick_params(rotation=45)
+        
+        # 2. ДТП по погоде
+        weather_counts = df['weather_conditions'].value_counts()
+        if len(weather_counts) > 0:
+            axes[0, 1].bar(range(len(weather_counts)), weather_counts.values, color='skyblue')
+            axes[0, 1].set_xticks(range(len(weather_counts)))
+            axes[0, 1].set_xticklabels(weather_counts.index, rotation=45, ha='right')
+            axes[0, 1].set_title('ДТП по погодным условиям')
+        
+        # 3. ДТП с осадками
+        rainy = df[df['precipitation'] > 0]
+        dry = df[df['precipitation'] == 0]
+        axes[1, 0].bar(['Сухо', 'Дождь'], [len(dry), len(rainy)], color=['orange', 'blue'])
+        axes[1, 0].set_title('Влияние осадков на ДТП')
+        
+        # 4. Корреляция осадки и ДТП по дням
+        daily_crashes = df.groupby('date').size().reset_index(name='crash_count')
+        daily_weather = df[['date', 'precipitation']].drop_duplicates()
+        merged = pd.merge(daily_crashes, daily_weather, on='date')
+        
+        axes[1, 1].scatter(merged['precipitation'], merged['crash_count'], alpha=0.6, s=100)
+        axes[1, 1].set_xlabel('Осадки (мм)')
+        axes[1, 1].set_ylabel('Количество ДТП в день')
+        axes[1, 1].set_title('Корреляция: осадки → количество ДТП')
+        
+        plt.tight_layout()
+        plt.savefig('northland_safety_analysis.png', dpi=150)
+        plt.show()
+        
+        print("\n✅ График сохранен: northland_safety_analysis.png")
+
+
+# ============ ЗАПУСК ============
+
+if __name__ == "__main__":
+    import sys
+    import io
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+    
+    print("=" * 60)
+    print("🚀 АНАЛИЗ ДОРОЖНОЙ БЕЗОПАСНОСТИ NORTHLAND")
+    print("=" * 60)
+    
+    analyzer = RoadSafetyAnalyzer()
+    
+    # Анализ за январь-март 2024
+    df = analyzer.analyze_northland(
+        start_date="2024-01-01",
+        end_date="2024-03-31"
+    )
+    
+    if df is not None:
+        print("\n" + "=" * 60)
+        print("✅ АНАЛИЗ ЗАВЕРШЕН!")
+        print("=" * 60)
+        print("\n📁 Результаты:")
+        print("   • northland_crashes_analysis.csv - данные для анализа")
+        print("   • northland_safety_analysis.png - визуализация")
+    else:
+        print("\n❌ Не удалось получить данные")

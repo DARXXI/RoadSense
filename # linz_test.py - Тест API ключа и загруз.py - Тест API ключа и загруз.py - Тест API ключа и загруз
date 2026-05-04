@@ -1,0 +1,189 @@
+# auckland_ultra_hd.py - Ультравысокое разрешение для Окленда (7.5 см)
+import requests
+from PIL import Image
+from io import BytesIO
+import matplotlib.pyplot as plt
+import math
+import os
+from datetime import datetime
+
+# ============ КОНФИГУРАЦИЯ ============
+API_KEY = "a409431e01c2452c8ff46173aecec35c"
+LAYER_ID = 121752  # Auckland 0.075m Urban Aerial Photos (2024-2025)
+
+# Координаты центра Окленда (Sky Tower)
+LAT_AUCKLAND = -36.8485
+LON_AUCKLAND = 174.7633
+
+# Создаем папку для результатов
+OUTPUT_FOLDER = "auckland_ultra_hd"
+os.makedirs(OUTPUT_FOLDER, exist_ok=True)
+
+def deg_to_tile(lat, lon, zoom):
+    """Конвертирует градусы в номера тайлов XYZ"""
+    n = 2.0 ** zoom
+    xtile = int((lon + 180.0) / 360.0 * n)
+    ytile = int((1.0 - math.asinh(math.tan(math.radians(lat))) / math.pi) / 2.0 * n)
+    return xtile, ytile
+
+def download_tile(zoom, x, y):
+    """Скачивает один тайл с LINZ"""
+    url = f"https://tiles-cdn.koordinates.com/services;key={API_KEY}/tiles/v4/layer={LAYER_ID}/EPSG:3857/{zoom}/{x}/{y}.png"
+    
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
+    
+    try:
+        response = requests.get(url, headers=headers, timeout=30)
+        if response.status_code == 200:
+            return Image.open(BytesIO(response.content))
+        else:
+            print(f"   HTTP {response.status_code}")
+            return None
+    except Exception as e:
+        print(f"   Ошибка: {e}")
+        return None
+
+def create_mosaic(zoom, center_x, center_y, radius=1):
+    """
+    Создает мозаику из тайлов вокруг центра
+    
+    radius=1 -> 3x3 тайла (9 шт)
+    radius=2 -> 5x5 тайлов (25 шт)
+    radius=3 -> 7x7 тайлов (49 шт)
+    """
+    mosaic_size = radius * 2 + 1
+    total_tiles = mosaic_size ** 2
+    print(f"\n🖼️  Создание мозаики {mosaic_size}x{mosaic_size} тайлов (всего {total_tiles} шт)")
+    
+    # Загружаем первый тайл для размера
+    first_tile = download_tile(zoom, center_x, center_y)
+    if not first_tile:
+        print("❌ Не удалось загрузить центральный тайл")
+        return None
+    
+    tile_width, tile_height = first_tile.size
+    mosaic = Image.new('RGB', (tile_width * mosaic_size, tile_height * mosaic_size))
+    
+    success_count = 0
+    for dy in range(-radius, radius + 1):
+        for dx in range(-radius, radius + 1):
+            x = center_x + dx
+            y = center_y + dy
+            print(f"   Тайл ({dx:+d},{dy:+d}) -> ({x},{y})...", end=" ")
+            
+            tile = download_tile(zoom, x, y)
+            if tile:
+                paste_x = (dx + radius) * tile_width
+                paste_y = (dy + radius) * tile_height
+                mosaic.paste(tile, (paste_x, paste_y))
+                success_count += 1
+                print("✅")
+            else:
+                print("❌")
+    
+    print(f"\n📊 Успешно загружено: {success_count}/{total_tiles} тайлов")
+    return mosaic if success_count > 0 else None
+
+
+# ============ ОСНОВНАЯ ФУНКЦИЯ ============
+
+print("=" * 60)
+print("🛰️  AUCKLAND ULTRA-HIGH RESOLUTION (7.5 cm/pixel)")
+print("=" * 60)
+print(f"📍 Центр: Sky Tower, Окленд")
+print(f"   Широта: {LAT_AUCKLAND}, Долгота: {LON_AUCKLAND}")
+print(f"🗺️  Слой ID: {LAYER_ID}")
+print(f"   Разрешение: 0.075 м/пиксель (7.5 см!)")
+print("=" * 60)
+
+# Рассчитываем центральный тайл для разных уровней зума
+zoom_levels = [
+    {"zoom": 18, "resolution_m": 0.3, "radius": 2, "desc": "Хорошее качество, большая область"},
+    {"zoom": 19, "resolution_m": 0.15, "radius": 2, "desc": "Отличное качество, средняя область"},
+    {"zoom": 20, "resolution_m": 0.075, "radius": 1, "desc": "Максимальное качество, малая область (для теста)"}
+]
+
+results = []
+
+for config in zoom_levels:
+    zoom = config["zoom"]
+    radius = config["radius"]
+    resolution = config["resolution_m"]
+    
+    print(f"\n{'='*60}")
+    print(f"🔍 Zoom {zoom} (~{resolution*100:.0f} см/пиксель) - {config['desc']}")
+    print(f"{'='*60}")
+    
+    # Получаем координаты центрального тайла
+    center_x, center_y = deg_to_tile(LAT_AUCKLAND, LON_AUCKLAND, zoom)
+    print(f"🎯 Центральный тайл: ({center_x}, {center_y})")
+    
+    # Создаем мозаику
+    mosaic = create_mosaic(zoom, center_x, center_y, radius=radius)
+    
+    if mosaic:
+        # Сохраняем
+        filename = f"{OUTPUT_FOLDER}/auckland_zoom{zoom}_r{radius}.png"
+        mosaic.save(filename)
+        
+        # Информация о файле
+        file_size = os.path.getsize(filename) / (1024 * 1024)
+        area_m = mosaic.size[0] * resolution
+        area_m2 = area_m * (mosaic.size[1] * resolution)
+        
+        print(f"\n✅ Мозаика сохранена: {filename}")
+        print(f"   Размер: {mosaic.size[0]}x{mosaic.size[1]} пикселей")
+        print(f"   Размер файла: {file_size:.2f} MB")
+        print(f"   Покрытие: ~{area_m:.0f}x{area_m:.0f} метров (~{area_m2/10000:.1f} га)")
+        
+        results.append({
+            'zoom': zoom,
+            'resolution_cm': resolution * 100,
+            'filename': filename,
+            'size_mb': file_size,
+            'area_ha': area_m2 / 10000
+        })
+        
+        # Показываем мозаику
+        plt.figure(figsize=(14, 14))
+        plt.imshow(mosaic)
+        plt.title(f"Окленд, Новая Зеландия (Zoom={zoom}, {resolution*100:.0f} см/пиксель)\n"
+                  f"Размер: {mosaic.size[0]}x{mosaic.size[1]} px, {area_m:.0f}x{area_m:.0f} м")
+        plt.axis('off')
+        plt.tight_layout()
+        
+        display_filename = f"{OUTPUT_FOLDER}/auckland_zoom{zoom}_display.png"
+        plt.savefig(display_filename, dpi=150, bbox_inches='tight')
+        plt.show()
+    else:
+        print(f"❌ Не удалось создать мозаику для zoom={zoom}")
+
+
+# ============ ВЫВОД РЕЗУЛЬТАТОВ ============
+
+print("\n" + "=" * 60)
+print("📊 ИТОГОВЫЕ РЕЗУЛЬТАТЫ")
+print("=" * 60)
+
+if results:
+    print("\nСохраненные снимки:")
+    for r in results:
+        print(f"\n   Zoom {r['zoom']} ({r['resolution_cm']:.0f} см/пиксель):")
+        print(f"      Файл: {r['filename']}")
+        print(f"      Размер: {r['size_mb']:.2f} MB")
+        print(f"      Покрытие: {r['area_ha']:.1f} га")
+    
+    print("\n💡 Рекомендации:")
+    print("   • Для быстрого анализа: используйте zoom 18 (0.3 м/пиксель)")
+    print("   • Для детального анализа дорог: используйте zoom 19 (0.15 м/пиксель)")
+    print("   • Для максимальной детализации: zoom 20 (0.075 м/пиксель), но область меньше")
+    
+    print("\n🎯 ДЛЯ ВАШЕГО АНАЛИЗА ДОРОГ:")
+    print("   Рекомендую zoom 19 (0.15 м/пиксель) с радиусом 2")
+    print("   Это даст отличное качество при хорошем покрытии")
+else:
+    print("❌ Не удалось создать ни одной мозаики")
+
+print("\n" + "=" * 60)
+print("✅ ГОТОВО!")
+print("=" * 60)

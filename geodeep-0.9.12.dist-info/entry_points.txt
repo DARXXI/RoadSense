@@ -1,4 +1,0 @@
-[console_scripts]
-geodeep = geodeep.scripts.main:main
-geodeep-inspect = geodeep.scripts.inspect_model:main
-yolo2geodeep = geodeep.scripts.yolo2geodeep:main

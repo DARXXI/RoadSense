@@ -344,8 +344,8 @@ if __name__ == "__main__":
     import io
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
     
-    #image_path = r"C:\Users\Arthur\Documents\RoadSense\satellite_image.tiff"
-    image_path = r"C:\Users\Arthur\Documents\RoadSense\Снимки\Screenshot 2026-04-26 033207.png"
+    image_path = r"C:\Users\Arthur\Documents\RoadSense\northland_zoom18_display.png"
+    #image_path = r"C:\Users\Arthur\Documents\RoadSense\Снимки\Screenshot 2026-04-26 033207.png"
 
     analyzer = RoadSurfaceSegmentation()
     

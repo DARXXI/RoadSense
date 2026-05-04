@@ -1,0 +1,29 @@
+# nz_gps_data.py - Получение GPS данных от NZTA
+import requests
+import pandas as pd
+
+# NZTA Open Data Portal
+# https://opendata.nzta.govt.nz/
+
+# Пример запроса к API трафика (если есть доступ)
+def get_traffic_flow_data():
+    """
+    Данные о потоке транспорта с сенсоров NZTA
+    Доступны исторические данные за 10+ лет
+    """
+    # Это пример URL — реальный нужно получить через портал
+    url = "https://opendata.nzta.govt.nz/api/v1/traffic/flow"
+    
+    # Требуется регистрация на портале
+    params = {
+        'sensor_id': 'AUC_001',  # ID сенсора в Окленде
+        'start_date': '2024-01-01',
+        'end_date': '2024-01-31',
+        'interval': '15min'
+    }
+    
+    # response = requests.get(url, params=params, headers={'apikey': 'YOUR_KEY'})
+    # return pd.DataFrame(response.json())
+    
+    print("Требуется регистрация на https://opendata.nzta.govt.nz/")
+    return None
