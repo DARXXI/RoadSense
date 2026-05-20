@@ -1,0 +1,250 @@
+<mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+
+    <!-- TITLE -->
+    <mxCell id="title" value="RoadSense — Архитектура системы" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1;fontColor=#1a237e;" vertex="1" parent="1">
+      <mxGeometry x="327" y="20" width="1000" height="40" as="geometry" />
+    </mxCell>
+
+    <!-- ======================== LAYER: INPUT ======================== -->
+    <mxCell id="layer_input" value="ВХОДНЫЕ ДАННЫЕ" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#555555;" vertex="1" parent="1">
+      <mxGeometry x="30" y="80" width="160" height="30" as="geometry" />
+    </mxCell>
+    <mxCell id="bg_input" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e9;strokeColor=#4caf50;strokeWidth=2;opacity=50;" vertex="1" parent="1">
+      <mxGeometry x="20" y="110" width="260" height="320" as="geometry" />
+    </mxCell>
+
+    <mxCell id="gps" value="GPS Track (.gpx)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9;strokeColor=#388e3c;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="50" y="130" width="200" height="45" as="geometry" />
+    </mxCell>
+    <mxCell id="coords" value="Координаты маршрута&#xa;(lat, lon)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9;strokeColor=#388e3c;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="50" y="195" width="200" height="45" as="geometry" />
+    </mxCell>
+    <mxCell id="date_input" value="Дата и время отправления&#xa;(start_date, hour)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9;strokeColor=#388e3c;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="50" y="260" width="200" height="45" as="geometry" />
+    </mxCell>
+    <mxCell id="road_id" value="Идентификатор дороги&#xa;(road_id)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9;strokeColor=#388e3c;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="50" y="325" width="200" height="45" as="geometry" />
+    </mxCell>
+
+    <!-- ======================== EXTERNAL APIs ======================== -->
+    <mxCell id="layer_api" value="ВНЕШНИЕ API" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#555555;" vertex="1" parent="1">
+      <mxGeometry x="30" y="460" width="160" height="30" as="geometry" />
+    </mxCell>
+    <mxCell id="bg_api" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1565c0;strokeWidth=2;opacity=50;" vertex="1" parent="1">
+      <mxGeometry x="20" y="490" width="260" height="260" as="geometry" />
+    </mxCell>
+
+    <mxCell id="linz_api" value="LINZ API&#xa;(координаты → XYZ tiles)" style="shape=mxgraph.network.server;html=1;whiteSpace=wrap;fillColor=#bbdefb;strokeColor=#1565c0;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="50" y="510" width="200" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="openmeteo" value="Open-Meteo API&#xa;(осадки, температура, ветер)" style="shape=mxgraph.network.server;html=1;whiteSpace=wrap;fillColor=#bbdefb;strokeColor=#1565c0;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="50" y="580" width="200" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="nzta_api" value="NZTA Traffic API&#xa;(плотность потока, сенсоры)" style="shape=mxgraph.network.server;html=1;whiteSpace=wrap;fillColor=#bbdefb;strokeColor=#1565c0;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="50" y="650" width="200" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="nzta_hist" value="NZTA Historical DB&#xa;(2013–2022, 2042 сенсора)" style="shape=mxgraph.network.database;html=1;whiteSpace=wrap;fillColor=#bbdefb;strokeColor=#1565c0;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="50" y="720" width="200" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- ======================== CORE MODULES ======================== -->
+    <mxCell id="layer_core" value="МОДУЛИ СИСТЕМЫ" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#555555;" vertex="1" parent="1">
+      <mxGeometry x="330" y="80" width="200" height="30" as="geometry" />
+    </mxCell>
+    <mxCell id="bg_core" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fce4ec;strokeColor=#c62828;strokeWidth=2;opacity=40;" vertex="1" parent="1">
+      <mxGeometry x="320" y="110" width="640" height="700" as="geometry" />
+    </mxCell>
+
+    <!-- Module 1 -->
+    <mxCell id="mod1" value="① Satellite Downloader&#xa;01_satellite_downloader.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ef9a9a;strokeColor=#b71c1c;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="350" y="130" width="280" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="mod1_detail" value="deg_to_tile() → XYZ&#xa;download_tile() zoom 18–19&#xa;mosaic 3×3 (512×512 px)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcdd2;strokeColor=#b71c1c;fontSize=9;align=left;" vertex="1" parent="1">
+      <mxGeometry x="350" y="190" width="280" height="55" as="geometry" />
+    </mxCell>
+
+    <!-- Module 2 -->
+    <mxCell id="mod2" value="② Surface Analyzer&#xa;02_surface_analyzer.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ef9a9a;strokeColor=#b71c1c;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="350" y="275" width="280" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="mod2_detail" value="XGBoost classifier&#xa;Features: RGB, HSV, LBP, GLCM, Canny&#xa;Классы: asphalt_good / damaged / gravel / dirt / sand&#xa;→ speed_factor [0.60 – 1.00]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcdd2;strokeColor=#b71c1c;fontSize=9;align=left;" vertex="1" parent="1">
+      <mxGeometry x="350" y="335" width="280" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- Module 3 -->
+    <mxCell id="mod3" value="③ Traffic &amp; Weather Module&#xa;03_traffic_weather_api.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ef9a9a;strokeColor=#b71c1c;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="350" y="425" width="280" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="mod3_detail" value="get_weather() → Open-Meteo&#xa;get_traffic_flow() → NZTA&#xa;K_weather: fine/rain/heavy_rain&#xa;K_time: peak / day / night" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcdd2;strokeColor=#b71c1c;fontSize=9;align=left;" vertex="1" parent="1">
+      <mxGeometry x="350" y="485" width="280" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- Module 4 -->
+    <mxCell id="mod4" value="④ Accident Risk Module&#xa;(внутри route_optimizer)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ef9a9a;strokeColor=#b71c1c;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="350" y="575" width="280" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="mod4_detail" value="p(accident) = base × K_weather × K_surface × K_time&#xa;clearance_time = 37 × (1 + d_police/30) × K_weather&#xa;R = p × clearance_time" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcdd2;strokeColor=#b71c1c;fontSize=9;align=left;" vertex="1" parent="1">
+      <mxGeometry x="350" y="635" width="280" height="55" as="geometry" />
+    </mxCell>
+
+    <!-- Module 5 -->
+    <mxCell id="mod5" value="⑤ Route Optimizer&#xa;04_route_optimizer.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ef9a9a;strokeColor=#b71c1c;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="350" y="720" width="280" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="mod5_detail" value="T = l/v + A×C + p×t&#xa;V = V0 × K_surf × K_weather × K_time&#xa;2-opt swap: O(n²) per iteration" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcdd2;strokeColor=#b71c1c;fontSize=9;align=left;" vertex="1" parent="1">
+      <mxGeometry x="350" y="780" width="280" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- road_analyzer -->
+    <mxCell id="mod_road" value="Road Analyzer&#xa;road_analyzer.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ef9a9a;strokeColor=#b71c1c;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="660" y="275" width="270" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="mod_road_detail" value="FCN ResNet50 (semantic segmentation)&#xa;COCO classes: road(145), gravel(121)&#xa;sand(150), dirt(111), mud(132)&#xa;→ pixel percentage per class" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcdd2;strokeColor=#b71c1c;fontSize=9;align=left;" vertex="1" parent="1">
+      <mxGeometry x="660" y="335" width="270" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- ML Models box -->
+    <mxCell id="ml_box" value="ML МОДЕЛИ" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#555555;" vertex="1" parent="1">
+      <mxGeometry x="660" y="430" width="160" height="30" as="geometry" />
+    </mxCell>
+    <mxCell id="bg_ml" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff9c4;strokeColor=#f9a825;strokeWidth=2;opacity=60;" vertex="1" parent="1">
+      <mxGeometry x="650" y="460" width="290" height="200" as="geometry" />
+    </mxCell>
+    <mxCell id="ml1" value="XGBoost Classifier&#xa;road_surface_xgboost.pkl" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff176;strokeColor=#f9a825;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="670" y="480" width="250" height="45" as="geometry" />
+    </mxCell>
+    <mxCell id="ml2" value="FCN ResNet50&#xa;(torchvision pretrained)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff176;strokeColor=#f9a825;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="670" y="540" width="250" height="45" as="geometry" />
+    </mxCell>
+    <mxCell id="ml3" value="Pearson Correlation&#xa;(weather / surface / time → delay)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff176;strokeColor=#f9a825;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="670" y="600" width="250" height="45" as="geometry" />
+    </mxCell>
+
+    <!-- ======================== PIPELINE ORCHESTRATOR ======================== -->
+    <mxCell id="pipeline" value="⑥ RoadSense Pipeline&#xa;05_main_pipeline.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#7b1fa2;strokeColor=#4a0072;fontColor=#ffffff;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+      <mxGeometry x="660" y="720" width="280" height="60" as="geometry" />
+    </mxCell>
+    <mxCell id="pipeline_detail" value="Оркестрация всех модулей&#xa;Кэш: surface_cache, weather_cache&#xa;Матрица расстояний (haversine)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ce93d8;strokeColor=#4a0072;fontSize=9;align=left;" vertex="1" parent="1">
+      <mxGeometry x="660" y="790" width="280" height="45" as="geometry" />
+    </mxCell>
+
+    <!-- ======================== OUTPUT ======================== -->
+    <mxCell id="layer_out" value="РЕЗУЛЬТАТ" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#555555;" vertex="1" parent="1">
+      <mxGeometry x="1010" y="80" width="160" height="30" as="geometry" />
+    </mxCell>
+    <mxCell id="bg_out" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#6a1b9a;strokeWidth=2;opacity=50;" vertex="1" parent="1">
+      <mxGeometry x="1000" y="110" width="280" height="480" as="geometry" />
+    </mxCell>
+
+    <mxCell id="out_eta" value="Прогнозируемое время ETA&#xa;T (мин) / T (ч)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ce93d8;strokeColor=#6a1b9a;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="1025" y="130" width="230" height="55" as="geometry" />
+    </mxCell>
+    <mxCell id="out_route" value="Оптимальный маршрут&#xa;(порядок сегментов после 2-opt)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#6a1b9a;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="1025" y="205" width="230" height="55" as="geometry" />
+    </mxCell>
+    <mxCell id="out_surface" value="Тип покрытия на маршруте&#xa;+ speed_factor" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#6a1b9a;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="1025" y="280" width="230" height="55" as="geometry" />
+    </mxCell>
+    <mxCell id="out_risk" value="Вероятность ДТП&#xa;p(accident) per segment" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#6a1b9a;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="1025" y="355" width="230" height="55" as="geometry" />
+    </mxCell>
+    <mxCell id="out_json" value="pipeline_result.json&#xa;surface_analysis_results.json" style="shape=mxgraph.network.file;html=1;whiteSpace=wrap;fillColor=#e1bee7;strokeColor=#6a1b9a;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="1025" y="430" width="230" height="55" as="geometry" />
+    </mxCell>
+    <mxCell id="out_viz" value="Визуализация сегментации&#xa;road_analysis_result.png" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#6a1b9a;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="1025" y="505" width="230" height="55" as="geometry" />
+    </mxCell>
+
+    <!-- ======================== CONNECTIONS ======================== -->
+    <!-- Input → modules -->
+    <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#388e3c;strokeWidth=2;" edge="1" source="gps" target="mod1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#388e3c;strokeWidth=2;" edge="1" source="coords" target="mod3" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#388e3c;strokeWidth=2;" edge="1" source="date_input" target="mod3" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- APIs → modules -->
+    <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#1565c0;strokeWidth=2;dashed=1;" edge="1" source="linz_api" target="mod1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#1565c0;strokeWidth=2;dashed=1;" edge="1" source="openmeteo" target="mod3" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#1565c0;strokeWidth=2;dashed=1;" edge="1" source="nzta_api" target="mod3" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#1565c0;strokeWidth=2;dashed=1;" edge="1" source="nzta_hist" target="mod4" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Module chain -->
+    <mxCell id="e8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#b71c1c;strokeWidth=2;" edge="1" source="mod1_detail" target="mod2" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e8b" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#b71c1c;strokeWidth=2;" edge="1" source="mod1_detail" target="mod_road" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#b71c1c;strokeWidth=2;" edge="1" source="mod2_detail" target="mod5" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#b71c1c;strokeWidth=2;" edge="1" source="mod3_detail" target="mod5" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#b71c1c;strokeWidth=2;" edge="1" source="mod4_detail" target="mod5" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- ML → modules -->
+    <mxCell id="e12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#f9a825;strokeWidth=2;dashed=1;" edge="1" source="ml1" target="mod2" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#f9a825;strokeWidth=2;dashed=1;" edge="1" source="ml2" target="mod_road" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Pipeline orchestrates -->
+    <mxCell id="e14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#4a0072;strokeWidth=3;" edge="1" source="mod5_detail" target="pipeline" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#4a0072;strokeWidth=3;" edge="1" source="pipeline" target="out_eta" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#4a0072;strokeWidth=2;" edge="1" source="pipeline_detail" target="out_route" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#4a0072;strokeWidth=2;" edge="1" source="pipeline_detail" target="out_json" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- LEGEND -->
+    <mxCell id="leg_title" value="Легенда" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="1010" y="620" width="100" height="20" as="geometry" />
+    </mxCell>
+    <mxCell id="leg1" value="Входные данные" style="rounded=1;fillColor=#c8e6c9;strokeColor=#388e3c;fontSize=9;" vertex="1" parent="1">
+      <mxGeometry x="1010" y="645" width="130" height="25" as="geometry" />
+    </mxCell>
+    <mxCell id="leg2" value="Внешние API" style="rounded=1;fillColor=#bbdefb;strokeColor=#1565c0;fontSize=9;" vertex="1" parent="1">
+      <mxGeometry x="1150" y="645" width="120" height="25" as="geometry" />
+    </mxCell>
+    <mxCell id="leg3" value="Модули системы" style="rounded=1;fillColor=#ef9a9a;strokeColor=#b71c1c;fontSize=9;" vertex="1" parent="1">
+      <mxGeometry x="1010" y="680" width="130" height="25" as="geometry" />
+    </mxCell>
+    <mxCell id="leg4" value="ML-модели" style="rounded=1;fillColor=#fff176;strokeColor=#f9a825;fontSize=9;" vertex="1" parent="1">
+      <mxGeometry x="1150" y="680" width="120" height="25" as="geometry" />
+    </mxCell>
+    <mxCell id="leg5" value="Оркестратор" style="rounded=1;fillColor=#7b1fa2;strokeColor=#4a0072;fontColor=#ffffff;fontSize=9;" vertex="1" parent="1">
+      <mxGeometry x="1010" y="715" width="130" height="25" as="geometry" />
+    </mxCell>
+    <mxCell id="leg6" value="Результат" style="rounded=1;fillColor=#ce93d8;strokeColor=#6a1b9a;fontSize=9;" vertex="1" parent="1">
+      <mxGeometry x="1150" y="715" width="120" height="25" as="geometry" />
+    </mxCell>
+
+  </root>
+</mxGraphModel>

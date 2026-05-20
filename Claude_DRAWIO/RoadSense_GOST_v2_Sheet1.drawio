@@ -1,0 +1,189 @@
+<mxGraphModel dx="1600" dy="900" grid="0" gridSize="10" guides="1" tooltips="1" connect="0" arrows="1" fold="0" page="1" pageScale="1" pageWidth="1277" pageHeight="720" math="0" shadow="0" background="#FFFFFF">
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+
+    <!-- ЗАГОЛОВОК -->
+    <mxCell id="title" value="Блок-схема алгоритма RoadSense Pipeline  (Лист 1 / 2)" style="text;html=1;align=center;verticalAlign=middle;fontSize=14;fontStyle=1;fontColor=#1A3A5C;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+      <mxGeometry x="20" y="6" width="1050" height="28" as="geometry"/>
+    </mxCell>
+    <mxCell id="title_line" value="" style="line;strokeColor=#1A3A5C;fillColor=none;" vertex="1" parent="1">
+      <mxGeometry x="20" y="36" width="1050" height="2" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════════════
+         ПОТОК: вертикальная левая колонка → слияние → ①
+         Центр колонки: cx=115, блоки w=200
+         ══════════════════════════════════════════════════════ -->
+
+    <!-- [1] НАЧАЛО -->
+    <mxCell id="b_start" value="&lt;b&gt;НАЧАЛО&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#1A3A5C;strokeColor=#000000;strokeWidth=2;fontColor=#FFFFFF;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="15" y="46" width="200" height="36" as="geometry"/>
+    </mxCell>
+    <mxCell id="e_s1" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;" edge="1" source="b_start" target="b_gps" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- [2] Ввод GPS — параллелограмм (ввод/вывод) -->
+    <mxCell id="b_gps" value="&lt;i&gt;Ввод: GPS-трек (.gpx)&lt;br&gt;lat, lon, n точек&lt;/i&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;size=15;fillColor=#E2F0D9;strokeColor=#000000;strokeWidth=1.5;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="15" y="96" width="200" height="42" as="geometry"/>
+    </mxCell>
+    <mxCell id="e_12" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;" edge="1" source="b_gps" target="b_download" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- [3] Загрузка спутн. снимков — ПОДПРОЦЕСС (двойная граница) -->
+    <mxCell id="b_download" value="Загрузка спутн. снимков&lt;br&gt;LINZ API, zoom 18–19" style="shape=process;whiteSpace=wrap;html=1;fillColor=#D6E4F0;strokeColor=#000000;strokeWidth=1.5;fontSize=10;backgroundOutline=1;" vertex="1" parent="1">
+      <mxGeometry x="15" y="152" width="200" height="44" as="geometry"/>
+    </mxCell>
+    <mxCell id="e_23" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;" edge="1" source="b_download" target="b_loaded" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- [4] Снимок загружен? — РОМБ -->
+    <mxCell id="b_loaded" value="Снимок&lt;br&gt;загружен?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFF5CC;strokeColor=#000000;strokeWidth=1.5;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="15" y="210" width="200" height="58" as="geometry"/>
+    </mxCell>
+
+    <!-- Нет → Пропуск точки -->
+    <mxCell id="b_skip" value="Пропуск точки / следующая" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D6E4F0;strokeColor=#000000;strokeWidth=1.5;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="240" y="222" width="185" height="34" as="geometry"/>
+    </mxCell>
+    <mxCell id="e_no" value="Нет" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;fontSize=9;fontStyle=2;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" source="b_loaded" target="b_skip" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <!-- Нет → возврат наверх к Download -->
+    <mxCell id="e_skip_back" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=0;entryX=1;entryY=0.5;" edge="1" source="b_skip" target="b_download" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="332" y="170"/>
+          <mxPoint x="215" y="170"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- Да → вниз -->
+    <mxCell id="e_yes" value="Да" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;fontSize=9;fontStyle=2;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="b_loaded" target="b_mosaic" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- [5] Мозаика 3×3 — ПОДПРОЦЕСС -->
+    <mxCell id="b_mosaic" value="Мозаика 3×3 (768×768 px)&lt;br&gt;surface_cache[key]" style="shape=process;whiteSpace=wrap;html=1;fillColor=#D6E4F0;strokeColor=#000000;strokeWidth=1.5;fontSize=10;backgroundOutline=1;" vertex="1" parent="1">
+      <mxGeometry x="15" y="282" width="200" height="44" as="geometry"/>
+    </mxCell>
+    <mxCell id="e_45" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;" edge="1" source="b_mosaic" target="b_features" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- [6] Извлечение признаков — ПОДПРОЦЕСС -->
+    <mxCell id="b_features" value="Извлечение признаков&lt;br&gt;RGB · HSV · LBP · GLCM&lt;br&gt;Canny · DarkSpot (50 feat.)" style="shape=process;whiteSpace=wrap;html=1;fillColor=#D6E4F0;strokeColor=#000000;strokeWidth=1.5;fontSize=10;backgroundOutline=1;" vertex="1" parent="1">
+      <mxGeometry x="15" y="340" width="200" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="e_56" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;" edge="1" source="b_features" target="b_xgb" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- [7] XGBoost — ПОДПРОЦЕСС -->
+    <mxCell id="b_xgb" value="XGBoost.predict()&lt;br&gt;→ surface_class&lt;br&gt;+ speed_factor [0.6–1.0]" style="shape=process;whiteSpace=wrap;html=1;fillColor=#D6E4F0;strokeColor=#000000;strokeWidth=1.5;fontSize=10;backgroundOutline=1;" vertex="1" parent="1">
+      <mxGeometry x="15" y="404" width="200" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════════════
+         ПРАВАЯ ВЕТКА — Погода и Трафик (cx=530)
+         ══════════════════════════════════════════════════════ -->
+
+    <!-- [8] Open-Meteo — ПОДПРОЦЕСС -->
+    <mxCell id="b_weather" value="Open-Meteo API&lt;br&gt;precipitation → weather&lt;br&gt;{fine / rain / heavy_rain}" style="shape=process;whiteSpace=wrap;html=1;fillColor=#D6E4F0;strokeColor=#000000;strokeWidth=1.5;fontSize=10;backgroundOutline=1;" vertex="1" parent="1">
+      <mxGeometry x="430" y="152" width="200" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- [9] NZTA Traffic — ПОДПРОЦЕСС -->
+    <mxCell id="b_traffic" value="NZTA Traffic API&lt;br&gt;congestion → K_time&lt;br&gt;{peak / day / night}" style="shape=process;whiteSpace=wrap;html=1;fillColor=#D6E4F0;strokeColor=#000000;strokeWidth=1.5;fontSize=10;backgroundOutline=1;" vertex="1" parent="1">
+      <mxGeometry x="430" y="218" width="200" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- [10] Pearson r -->
+    <mxCell id="b_pearson" value="Pearson r&lt;br&gt;weather ↔ delay&lt;br&gt;surface ↔ delay" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D6E4F0;strokeColor=#000000;strokeWidth=1.5;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="430" y="284" width="200" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Вертикальные стрелки между погодными блоками -->
+    <mxCell id="e_wt" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;" edge="1" source="b_weather" target="b_traffic" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e_tp" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;" edge="1" source="b_traffic" target="b_pearson" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- ══════════════════════════════════════════════════════
+         ШИНА СЛИЯНИЯ (Y=500)
+         ══════════════════════════════════════════════════════ -->
+
+    <!-- Точки шины -->
+    <mxCell id="pt_left"   value="" style="point;strokeColor=none;fillColor=none;" vertex="1" parent="1"><mxGeometry x="115" y="500" width="2" height="2" as="geometry"/></mxCell>
+    <mxCell id="pt_right"  value="" style="point;strokeColor=none;fillColor=none;" vertex="1" parent="1"><mxGeometry x="530" y="500" width="2" height="2" as="geometry"/></mxCell>
+    <mxCell id="pt_center" value="" style="point;strokeColor=none;fillColor=none;" vertex="1" parent="1"><mxGeometry x="322" y="500" width="2" height="2" as="geometry"/></mxCell>
+
+    <!-- Стрелки от XGBoost и Pearson к шине -->
+    <mxCell id="e_xgb_bus" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="b_xgb" target="pt_left" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e_prs_bus" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="b_pearson" target="pt_right" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- Горизонтальная шина -->
+    <mxCell id="bus" value="" style="line;strokeColor=#000000;strokeWidth=1.5;fillColor=none;" vertex="1" parent="1">
+      <mxGeometry x="115" y="500" width="415" height="2" as="geometry"/>
+    </mxCell>
+
+    <!-- Стрелка от центра шины вниз к соединителю -->
+    <mxCell id="e_bus_conn" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;" edge="1" source="pt_center" target="conn1" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- СОЕДИНИТЕЛЬ ① -->
+    <mxCell id="conn1" value="&lt;b&gt;1&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFD700;strokeColor=#000000;strokeWidth=2;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="304" y="516" width="36" height="36" as="geometry"/>
+    </mxCell>
+    <mxCell id="conn1_lbl" value="→ продолжение на листе 2" style="text;html=1;fontSize=9;fontStyle=2;fontColor=#555555;" vertex="1" parent="1">
+      <mxGeometry x="346" y="526" width="200" height="18" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════════════
+         МЕТКИ ЦИКЛОВ — шестиугольники (как на фото)
+         ══════════════════════════════════════════════════════ -->
+
+    <!-- Шестиугольник «А — цикл по точкам» (между Download и шиной) -->
+    <mxCell id="hex_A" value="&lt;b&gt;A&lt;/b&gt;&lt;br&gt;пока i &lt; n" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;size=10;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="670" y="200" width="130" height="48" as="geometry"/>
+    </mxCell>
+    <!-- Пояснение к шестиугольнику A -->
+    <mxCell id="hex_A_note" value="Цикл по точкам GPS-трека:&lt;br&gt;i = 0..n−1&lt;br&gt;Загрузка снимка → мозаика → признаки → XGBoost" style="text;html=1;fontSize=8.5;fontColor=#333333;align=left;" vertex="1" parent="1">
+      <mxGeometry x="812" y="198" width="230" height="52" as="geometry"/>
+    </mxCell>
+
+    <!-- Шестиугольник «B — цикл погода» -->
+    <mxCell id="hex_B" value="&lt;b&gt;B&lt;/b&gt;&lt;br&gt;пока j &lt; m" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;size=10;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="670" y="270" width="130" height="48" as="geometry"/>
+    </mxCell>
+    <mxCell id="hex_B_note" value="Цикл по сегментам маршрута:&lt;br&gt;j = 0..m−1&lt;br&gt;Запрос Open-Meteo → K_weather → K_time" style="text;html=1;fontSize=8.5;fontColor=#333333;align=left;" vertex="1" parent="1">
+      <mxGeometry x="812" y="268" width="230" height="52" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════════════
+         ЛЕГЕНДА
+         ══════════════════════════════════════════════════════ -->
+    <mxCell id="leg_bg" value="" style="rounded=1;fillColor=#F9F9F9;strokeColor=#CCCCCC;strokeWidth=1;" vertex="1" parent="1">
+      <mxGeometry x="670" y="370" width="390" height="188" as="geometry"/>
+    </mxCell>
+    <mxCell id="leg_title" value="&lt;b&gt;Обозначения (ГОСТ 19.701-90)&lt;/b&gt;" style="text;html=1;fontSize=9;fontColor=#1A3A5C;" vertex="1" parent="1">
+      <mxGeometry x="678" y="376" width="374" height="16" as="geometry"/>
+    </mxCell>
+
+    <!-- Терминатор -->
+    <mxCell id="lg1" value="" style="ellipse;fillColor=#1A3A5C;strokeColor=#000000;strokeWidth=1;" vertex="1" parent="1"><mxGeometry x="678" y="398" width="46" height="20" as="geometry"/></mxCell>
+    <mxCell id="lg1t" value="— Начало / Конец" style="text;html=1;fontSize=8.5;" vertex="1" parent="1"><mxGeometry x="730" y="398" width="145" height="20" as="geometry"/></mxCell>
+
+    <!-- Процесс -->
+    <mxCell id="lg2" value="" style="rounded=0;fillColor=#D6E4F0;strokeColor=#000000;strokeWidth=1;" vertex="1" parent="1"><mxGeometry x="678" y="424" width="46" height="20" as="geometry"/></mxCell>
+    <mxCell id="lg2t" value="— Процесс" style="text;html=1;fontSize=8.5;" vertex="1" parent="1"><mxGeometry x="730" y="424" width="145" height="20" as="geometry"/></mxCell>
+
+    <!-- Подпроцесс (двойная граница) -->
+    <mxCell id="lg3" value="" style="shape=process;fillColor=#D6E4F0;strokeColor=#000000;strokeWidth=1;backgroundOutline=1;" vertex="1" parent="1"><mxGeometry x="678" y="450" width="46" height="20" as="geometry"/></mxCell>
+    <mxCell id="lg3t" value="— Подпроцесс (двойная граница)" style="text;html=1;fontSize=8.5;" vertex="1" parent="1"><mxGeometry x="730" y="450" width="220" height="20" as="geometry"/></mxCell>
+
+    <!-- Решение -->
+    <mxCell id="lg4" value="" style="rhombus;fillColor=#FFF5CC;strokeColor=#000000;strokeWidth=1;" vertex="1" parent="1"><mxGeometry x="678" y="474" width="46" height="28" as="geometry"/></mxCell>
+    <mxCell id="lg4t" value="— Решение" style="text;html=1;fontSize=8.5;" vertex="1" parent="1"><mxGeometry x="730" y="480" width="145" height="20" as="geometry"/></mxCell>
+
+    <!-- Ввод/Вывод -->
+    <mxCell id="lg5" value="" style="shape=parallelogram;perimeter=parallelogramPerimeter;fixedSize=1;size=8;fillColor=#E2F0D9;strokeColor=#000000;strokeWidth=1;" vertex="1" parent="1"><mxGeometry x="678" y="508" width="46" height="20" as="geometry"/></mxCell>
+    <mxCell id="lg5t" value="— Ввод / Вывод" style="text;html=1;fontSize=8.5;fontStyle=2;" vertex="1" parent="1"><mxGeometry x="730" y="508" width="145" height="20" as="geometry"/></mxCell>
+
+    <!-- Шестиугольник -->
+    <mxCell id="lg6" value="" style="shape=hexagon;perimeter=hexagonPerimeter2;fixedSize=1;size=6;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;" vertex="1" parent="1"><mxGeometry x="678" y="532" width="46" height="20" as="geometry"/></mxCell>
+    <mxCell id="lg6t" value="— Метка цикла (шестиугольник)" style="text;html=1;fontSize=8.5;" vertex="1" parent="1"><mxGeometry x="730" y="532" width="220" height="20" as="geometry"/></mxCell>
+
+    <!-- Соединитель -->
+    <mxCell id="lg7c" value="1" style="ellipse;fillColor=#FFD700;strokeColor=#000000;strokeWidth=1.5;fontSize=8;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="685" y="556" width="24" height="24" as="geometry"/></mxCell>
+    <mxCell id="lg7t" value="— Соединитель переноса" style="text;html=1;fontSize=8.5;" vertex="1" parent="1"><mxGeometry x="730" y="558" width="200" height="20" as="geometry"/></mxCell>
+
+  </root>
+</mxGraphModel>

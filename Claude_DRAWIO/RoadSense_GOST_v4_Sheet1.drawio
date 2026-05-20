@@ -1,0 +1,216 @@
+<mxGraphModel dx="1600" dy="900" grid="0" gridSize="10" guides="1" tooltips="1" connect="0" arrows="1" fold="0" page="1" pageScale="1" pageWidth="1277" pageHeight="720" math="0" shadow="0" background="#FFFFFF">
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+
+    <!-- ЗАГОЛОВОК -->
+    <mxCell id="title" value="Блок-схема алгоритма RoadSense Pipeline  (Лист 1 / 2)" style="text;html=1;align=center;verticalAlign=middle;fontSize=13;fontStyle=1;fontColor=#000000;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+      <mxGeometry x="20" y="5" width="840" height="26" as="geometry"/>
+    </mxCell>
+    <mxCell id="title_line" value="" style="line;strokeColor=#000000;fillColor=none;" vertex="1" parent="1">
+      <mxGeometry x="20" y="33" width="1237" height="2" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════
+         ГЛАВНАЯ КОЛОНКА  cx=130, w=210
+         ══════════════════════════════════════════ -->
+
+    <!-- [1] НАЧАЛО — овал -->
+    <mxCell id="b_start" value="&lt;b&gt;Начало&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="25" y="42" width="210" height="36" as="geometry"/>
+    </mxCell>
+    <mxCell id="e_s1" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="b_start" target="b_gps" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- [2] Ввод GPS — параллелограмм -->
+    <mxCell id="b_gps" value="&lt;i&gt;Ввод: GPS-трек (.gpx)&lt;br&gt;широта, долгота, n точек&lt;/i&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;size=16;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="25" y="90" width="210" height="40" as="geometry"/>
+    </mxCell>
+    <mxCell id="e_12" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="b_gps" target="hex_A_start" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- ══════════════════════════════════════════
+         ЭТАП А — ЗАГРУЗКА И АНАЛИЗ СНИМКОВ
+         ══════════════════════════════════════════ -->
+
+    <!-- Начало этапа А — трапеция (широкий верх) -->
+    <mxCell id="hex_A_start" value="&lt;b&gt;А&lt;/b&gt;   пока i &lt; n" style="shape=trapezoid;perimeter=trapezoidPerimeter;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontSize=10;fontStyle=1;flipV=0;" vertex="1" parent="1">
+      <mxGeometry x="25" y="142" width="210" height="40" as="geometry"/>
+    </mxCell>
+
+    <!-- Пояснение этапа А -->
+    <mxCell id="note_A" value="n — количество точек GPS-трека&lt;br&gt;i — счётчик текущей точки&lt;br&gt;Цикл: загрузка снимка, мозаика,&lt;br&gt;признаки, классификация покрытия" style="text;html=1;fontSize=8.5;fontColor=#000000;align=left;strokeColor=#000000;strokeWidth=1;fillColor=#FFFFFF;dashed=1;dashPattern=4 3;" vertex="1" parent="1">
+      <mxGeometry x="258" y="138" width="215" height="58" as="geometry"/>
+    </mxCell>
+    <mxCell id="e_noteA" style="edgeStyle=none;dashed=1;strokeColor=#000000;strokeWidth=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;endArrow=none;" edge="1" source="note_A" target="hex_A_start" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <mxCell id="e_A1" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="hex_A_start" target="b_download" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- [A1] Загрузка снимков — подпроцесс (двойной прямоугольник) -->
+    <mxCell id="b_download" value="Загрузка спутниковых снимков&lt;br&gt;LINZ API, масштаб 18–19&lt;br&gt;координаты → тайлы XYZ" style="shape=process;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontSize=10;backgroundOutline=1;" vertex="1" parent="1">
+      <mxGeometry x="25" y="194" width="210" height="48" as="geometry"/>
+    </mxCell>
+
+    <!-- Раскрытие подпроцесса загрузки -->
+    <mxCell id="note_dl" value="&lt;b&gt;Детали подпроцесса:&lt;/b&gt;&lt;br&gt;1. GPS (ш, д) → координаты тайла XYZ&lt;br&gt;2. HTTP-запрос к tiles-cdn.koordinates.com&lt;br&gt;3. Сборка мозаики 3×3 (768×768 пкс)&lt;br&gt;4. Сохранение: точка_{i}_масштаб19.png" style="text;html=1;fontSize=8.5;fontColor=#000000;align=left;strokeColor=#000000;strokeWidth=1;fillColor=#FFFFFF;dashed=1;dashPattern=4 3;" vertex="1" parent="1">
+      <mxGeometry x="258" y="188" width="215" height="68" as="geometry"/>
+    </mxCell>
+    <mxCell id="e_noteDL" style="edgeStyle=none;dashed=1;strokeColor=#000000;strokeWidth=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;endArrow=none;" edge="1" source="note_dl" target="b_download" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <mxCell id="e_34" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="b_download" target="b_loaded" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- [A2] Снимок загружен? — ромб -->
+    <mxCell id="b_loaded" value="Снимок&lt;br&gt;загружен?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="25" y="254" width="210" height="56" as="geometry"/>
+    </mxCell>
+
+    <!-- Нет → пропуск -->
+    <mxCell id="b_skip" value="Пропуск точки&lt;br&gt;→ следующая" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="258" y="264" width="150" height="36" as="geometry"/>
+    </mxCell>
+    <mxCell id="e_no" value="Нет" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;fontSize=9;fontStyle=2;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" source="b_loaded" target="b_skip" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e_skip_loop" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=0;entryX=1;entryY=0.5;" edge="1" source="b_skip" target="hex_A_start" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="333" y="152"/>
+          <mxPoint x="235" y="152"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- Да → вниз -->
+    <mxCell id="e_yes" value="Да" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;fontSize=9;fontStyle=2;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="b_loaded" target="b_mosaic" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- [A3] Мозаика — подпроцесс -->
+    <mxCell id="b_mosaic" value="Формирование мозаики 3×3&lt;br&gt;768×768 пкс, кэш[ключ]" style="shape=process;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontSize=10;backgroundOutline=1;" vertex="1" parent="1">
+      <mxGeometry x="25" y="322" width="210" height="44" as="geometry"/>
+    </mxCell>
+    <mxCell id="e_56" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="b_mosaic" target="b_features" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- [A4] Извлечение признаков — подпроцесс -->
+    <mxCell id="b_features" value="Извлечение признаков&lt;br&gt;RGB · ОТЦ · ЛБП · ГЛКМ&lt;br&gt;Кэнни · тёмные пятна (50 призн.)" style="shape=process;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontSize=10;backgroundOutline=1;" vertex="1" parent="1">
+      <mxGeometry x="25" y="378" width="210" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Раскрытие признаков -->
+    <mxCell id="note_feat" value="&lt;b&gt;Детали подпроцесса:&lt;/b&gt;&lt;br&gt;RGB: среднее/откл./асим. (9 призн.)&lt;br&gt;ОТЦ: среднее/откл./асим. (9 призн.)&lt;br&gt;ЛБП-гистограмма (26 призн.)&lt;br&gt;ГЛКМ: контраст/энергия/корр. (4 призн.)&lt;br&gt;Кэнни (1) + тёмные пятна (1)" style="text;html=1;fontSize=8.5;fontColor=#000000;align=left;strokeColor=#000000;strokeWidth=1;fillColor=#FFFFFF;dashed=1;dashPattern=4 3;" vertex="1" parent="1">
+      <mxGeometry x="258" y="372" width="215" height="78" as="geometry"/>
+    </mxCell>
+    <mxCell id="e_noteFeat" style="edgeStyle=none;dashed=1;strokeColor=#000000;strokeWidth=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;endArrow=none;" edge="1" source="note_feat" target="b_features" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <mxCell id="e_67" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="b_features" target="b_xgb" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- [A5] XGBoost — подпроцесс -->
+    <mxCell id="b_xgb" value="Классификация покрытия (XGBoost)&lt;br&gt;→ класс покрытия&lt;br&gt;→ коэф. скорости [0,6–1,0]" style="shape=process;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontSize=10;backgroundOutline=1;" vertex="1" parent="1">
+      <mxGeometry x="25" y="440" width="210" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Раскрытие XGBoost -->
+    <mxCell id="note_xgb" value="&lt;b&gt;Детали подпроцесса:&lt;/b&gt;&lt;br&gt;Модель: road_surface_xgboost.pkl&lt;br&gt;Классы: хор. асфальт, повр. асфальт,&lt;br&gt;бетон, гравий, грунт, песок&lt;br&gt;Достоверность = max(вер.) × 100%" style="text;html=1;fontSize=8.5;fontColor=#000000;align=left;strokeColor=#000000;strokeWidth=1;fillColor=#FFFFFF;dashed=1;dashPattern=4 3;" vertex="1" parent="1">
+      <mxGeometry x="258" y="434" width="215" height="68" as="geometry"/>
+    </mxCell>
+    <mxCell id="e_noteXGB" style="edgeStyle=none;dashed=1;strokeColor=#000000;strokeWidth=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;endArrow=none;" edge="1" source="note_xgb" target="b_xgb" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <mxCell id="e_7end" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="b_xgb" target="hex_A_end" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- Конец этапа А — перевёрнутая трапеция -->
+    <mxCell id="hex_A_end" value="&lt;b&gt;А&lt;/b&gt;   i = i + 1" style="shape=trapezoid;perimeter=trapezoidPerimeter;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontSize=10;fontStyle=1;flipV=1;" vertex="1" parent="1">
+      <mxGeometry x="25" y="502" width="210" height="40" as="geometry"/>
+    </mxCell>
+
+    <!-- Петля возврата А -->
+    <mxCell id="e_loop_A" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0;exitY=0.5;entryX=0;entryY=0.5;" edge="1" source="hex_A_end" target="hex_A_start" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="5" y="522"/>
+          <mxPoint x="5" y="162"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <mxCell id="e_A_B" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="hex_A_end" target="hex_B_start" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- ══════════════════════════════════════════
+         ЭТАП Б — ПОГОДА И ТРАФИК
+         ══════════════════════════════════════════ -->
+
+    <!-- Начало этапа Б -->
+    <mxCell id="hex_B_start" value="&lt;b&gt;Б&lt;/b&gt;   пока j &lt; m" style="shape=trapezoid;perimeter=trapezoidPerimeter;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontSize=10;fontStyle=1;flipV=0;" vertex="1" parent="1">
+      <mxGeometry x="25" y="554" width="210" height="40" as="geometry"/>
+    </mxCell>
+
+    <!-- Пояснение этапа Б -->
+    <mxCell id="note_B" value="m — количество сегментов маршрута&lt;br&gt;j — счётчик текущего сегмента&lt;br&gt;Цикл: запрос погоды и трафика&lt;br&gt;для каждого сегмента маршрута" style="text;html=1;fontSize=8.5;fontColor=#000000;align=left;strokeColor=#000000;strokeWidth=1;fillColor=#FFFFFF;dashed=1;dashPattern=4 3;" vertex="1" parent="1">
+      <mxGeometry x="258" y="550" width="215" height="56" as="geometry"/>
+    </mxCell>
+    <mxCell id="e_noteB" style="edgeStyle=none;dashed=1;strokeColor=#000000;strokeWidth=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;endArrow=none;" edge="1" source="note_B" target="hex_B_start" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <mxCell id="e_B1" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="hex_B_start" target="b_weather" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- [Б1] Запрос погоды — подпроцесс -->
+    <mxCell id="b_weather" value="Запрос данных о погоде (Open-Meteo)&lt;br&gt;осадки → условия: {ясно/дождь/ливень}" style="shape=process;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontSize=10;backgroundOutline=1;" vertex="1" parent="1">
+      <mxGeometry x="25" y="606" width="210" height="48" as="geometry"/>
+    </mxCell>
+    <mxCell id="e_B12" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="b_weather" target="b_traffic" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- [Б2] Запрос трафика — подпроцесс -->
+    <mxCell id="b_traffic" value="Запрос данных о трафике (НЗТА)&lt;br&gt;загруженность → коэф. времени суток&lt;br&gt;{пик / день / ночь}" style="shape=process;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontSize=10;backgroundOutline=1;" vertex="1" parent="1">
+      <mxGeometry x="25" y="666" width="210" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- Раскрытие трафика -->
+    <mxCell id="note_traf" value="&lt;b&gt;Детали подпроцесса:&lt;/b&gt;&lt;br&gt;Исторические данные НЗТА 2013–2022&lt;br&gt;2042 датчика по всей стране&lt;br&gt;К_время: пик=0,75, день=1,0, ночь=1,1&lt;br&gt;К_погода: ясно=1,0, дождь=0,8, ливень=0,65" style="text;html=1;fontSize=8.5;fontColor=#000000;align=left;strokeColor=#000000;strokeWidth=1;fillColor=#FFFFFF;dashed=1;dashPattern=4 3;" vertex="1" parent="1">
+      <mxGeometry x="258" y="658" width="215" height="72" as="geometry"/>
+    </mxCell>
+    <mxCell id="e_noteTraf" style="edgeStyle=none;dashed=1;strokeColor=#000000;strokeWidth=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;endArrow=none;" edge="1" source="note_traf" target="b_traffic" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <mxCell id="e_traf_conn" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="b_traffic" target="conn1" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- СОЕДИНИТЕЛЬ ① -->
+    <mxCell id="conn1" value="&lt;b&gt;1&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="112" y="728" width="36" height="36" as="geometry"/>
+    </mxCell>
+    <mxCell id="conn1_lbl" value="продолжение на листе 2" style="text;html=1;fontSize=9;fontStyle=2;fontColor=#000000;" vertex="1" parent="1">
+      <mxGeometry x="154" y="738" width="200" height="18" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════
+         ЛЕГЕНДА
+         ══════════════════════════════════════════ -->
+    <mxCell id="leg_bg" value="" style="rounded=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;" vertex="1" parent="1">
+      <mxGeometry x="510" y="42" width="390" height="270" as="geometry"/>
+    </mxCell>
+    <mxCell id="leg_tit" value="&lt;b&gt;Условные обозначения (ГОСТ 19.701-90)&lt;/b&gt;" style="text;html=1;fontSize=9.5;fontColor=#000000;" vertex="1" parent="1">
+      <mxGeometry x="518" y="48" width="374" height="16" as="geometry"/>
+    </mxCell>
+
+    <mxCell id="lg1s" value="" style="ellipse;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;" vertex="1" parent="1"><mxGeometry x="518" y="72" width="52" height="22" as="geometry"/></mxCell>
+    <mxCell id="lg1t" value="— Начало / Конец" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="576" y="72" width="200" height="22" as="geometry"/></mxCell>
+
+    <mxCell id="lg2s" value="" style="shape=process;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;backgroundOutline=1;" vertex="1" parent="1"><mxGeometry x="518" y="100" width="52" height="22" as="geometry"/></mxCell>
+    <mxCell id="lg2t" value="— Подпроцесс (двойная граница)" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="576" y="100" width="270" height="22" as="geometry"/></mxCell>
+
+    <mxCell id="lg3s" value="" style="rounded=0;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;" vertex="1" parent="1"><mxGeometry x="518" y="128" width="52" height="22" as="geometry"/></mxCell>
+    <mxCell id="lg3t" value="— Процесс" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="576" y="128" width="200" height="22" as="geometry"/></mxCell>
+
+    <mxCell id="lg4s" value="" style="rhombus;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;" vertex="1" parent="1"><mxGeometry x="518" y="156" width="52" height="30" as="geometry"/></mxCell>
+    <mxCell id="lg4t" value="— Условие (решение)" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="576" y="164" width="200" height="22" as="geometry"/></mxCell>
+
+    <mxCell id="lg5s" value="" style="shape=parallelogram;perimeter=parallelogramPerimeter;fixedSize=1;size=10;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;" vertex="1" parent="1"><mxGeometry x="518" y="194" width="52" height="22" as="geometry"/></mxCell>
+    <mxCell id="lg5t" value="— Ввод / Вывод данных" style="text;html=1;fontSize=9;fontStyle=2;" vertex="1" parent="1"><mxGeometry x="576" y="194" width="200" height="22" as="geometry"/></mxCell>
+
+    <mxCell id="lg6s" value="" style="shape=trapezoid;perimeter=trapezoidPerimeter;fixedSize=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;flipV=0;" vertex="1" parent="1"><mxGeometry x="518" y="222" width="52" height="22" as="geometry"/></mxCell>
+    <mxCell id="lg6t" value="— Начало этапа / цикла" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="576" y="222" width="200" height="22" as="geometry"/></mxCell>
+
+    <mxCell id="lg7s" value="" style="shape=trapezoid;perimeter=trapezoidPerimeter;fixedSize=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;flipV=1;" vertex="1" parent="1"><mxGeometry x="518" y="250" width="52" height="22" as="geometry"/></mxCell>
+    <mxCell id="lg7t" value="— Конец этапа / цикла (возврат)" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="576" y="250" width="200" height="22" as="geometry"/></mxCell>
+
+    <mxCell id="lg8s" value="1" style="ellipse;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontSize=9;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="527" y="278" width="28" height="28" as="geometry"/></mxCell>
+    <mxCell id="lg8t" value="— Соединитель переноса между листами" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="576" y="284" width="270" height="18" as="geometry"/></mxCell>
+
+    <!-- Иллюстрация раскрытия подпроцесса -->
+    <mxCell id="lg9_proc" value="" style="shape=process;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;backgroundOutline=1;" vertex="1" parent="1"><mxGeometry x="518" y="318" width="66" height="22" as="geometry"/></mxCell>
+    <mxCell id="lg9_note" value="Детали..." style="text;html=1;fontSize=8.5;strokeColor=#000000;strokeWidth=1;fillColor=#FFFFFF;dashed=1;dashPattern=4 3;align=left;" vertex="1" parent="1"><mxGeometry x="598" y="314" width="76" height="26" as="geometry"/></mxCell>
+    <mxCell id="lg9_line" style="edgeStyle=none;dashed=1;strokeColor=#000000;strokeWidth=1;endArrow=none;" edge="1" source="lg9_note" target="lg9_proc" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="lg9t" value="— Раскрытие подпроцесса (пунктир)" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="682" y="320" width="210" height="18" as="geometry"/></mxCell>
+
+  </root>
+</mxGraphModel>

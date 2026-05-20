@@ -1,0 +1,285 @@
+<mxGraphModel dx="1600" dy="900" grid="0" gridSize="10" guides="1" tooltips="1" connect="0" arrows="1" fold="0" page="1" pageScale="1" pageWidth="1277" pageHeight="720" math="0" shadow="0" background="#FFFFFF">
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+
+    <!-- ═══════════════════════════════════════════════════
+         ГОСТ 19.701-90  |  Лист 2 / 2
+         Слайд WIDE 1277×720 px (альбомная)
+         Левая колонка: блоки x=15, w=200, h=45, gap=12
+         ═══════════════════════════════════════════════════ -->
+
+    <!-- ЗАГОЛОВОК -->
+    <mxCell id="title" value="Блок-схема алгоритма RoadSense Pipeline  (Лист 2 / 2)" style="text;html=1;align=center;verticalAlign=middle;fontSize=14;fontStyle=1;fontColor=#1A3A5C;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+      <mxGeometry x="20" y="6" width="1237" height="30" as="geometry"/>
+    </mxCell>
+    <mxCell id="title_line" value="" style="line;strokeColor=#1A3A5C;fillColor=none;" vertex="1" parent="1">
+      <mxGeometry x="20" y="38" width="1237" height="2" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════════════
+         ЛЕВАЯ КОЛОНКА — основная схема
+         x=15, w=200, h=45, gap=12
+         cx = 15+100 = 115 (центр)
+         ══════════════════════════════════ -->
+
+    <!-- Соединитель ① входящий -->
+    <mxCell id="b_conn1_in" value="&lt;b&gt;1&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFD700;strokeColor=#000000;strokeWidth=2;fontSize=13;fontStyle=1;verticalAlign=middle;" vertex="1" parent="1">
+      <mxGeometry x="97" y="46" width="36" height="36" as="geometry"/>
+    </mxCell>
+    <mxCell id="conn1_in_lbl" value="← с листа 1" style="text;html=1;fontSize=8;fontStyle=2;fontColor=#555555;" vertex="1" parent="1">
+      <mxGeometry x="137" y="54" width="100" height="18" as="geometry"/>
+    </mxCell>
+
+    <!-- Стрелка вниз от соединителя к блоку A -->
+    <mxCell id="e_c1_a" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="b_conn1_in" target="b_A" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- [A] Матрица расстояний -->
+    <mxCell id="b_A" value="Матрица расстояний&lt;br&gt;d(i,j) = Haversine(P_i, P_j)&lt;br&gt;[n×n], км" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D6E4F0;strokeColor=#000000;strokeWidth=1.5;fontSize=10;verticalAlign=middle;" vertex="1" parent="1">
+      <mxGeometry x="15" y="96" width="200" height="45" as="geometry"/>
+    </mxCell>
+    <mxCell id="e_ab" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="b_A" target="b_B" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- [B] Скорость сегмента -->
+    <mxCell id="b_B" value="V_ij = V₀ × K_surf × K_weather × K_time&lt;br&gt;V₀ = 90 км/ч" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D6E4F0;strokeColor=#000000;strokeWidth=1.5;fontSize=10;verticalAlign=middle;" vertex="1" parent="1">
+      <mxGeometry x="15" y="153" width="200" height="45" as="geometry"/>
+    </mxCell>
+    <mxCell id="e_bc" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="b_B" target="b_C" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- [C] Вероятность ДТП -->
+    <mxCell id="b_C" value="Вероятность ДТП&lt;br&gt;p = base×K_w×K_s×K_t  [0..0.08]&lt;br&gt;clearance = 37×(1+d/30)×K_w мин,  R = p×c" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D6E4F0;strokeColor=#000000;strokeWidth=1.5;fontSize=10;verticalAlign=middle;" vertex="1" parent="1">
+      <mxGeometry x="15" y="210" width="200" height="45" as="geometry"/>
+    </mxCell>
+    <mxCell id="e_cd" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="b_C" target="b_D" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- [D] Активная авария? (ромб) -->
+    <mxCell id="b_D" value="rand() &lt; 0.03&lt;br&gt;(активная авария)?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFF5CC;strokeColor=#000000;strokeWidth=1.5;fontSize=10;verticalAlign=middle;" vertex="1" parent="1">
+      <mxGeometry x="15" y="267" width="200" height="58" as="geometry"/>
+    </mxCell>
+
+    <!-- Да → задержка пробки (вправо) -->
+    <mxCell id="b_jam" value="Задержка пробки&lt;br&gt;A×C = rand(8..25) мин" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D6E4F0;strokeColor=#000000;strokeWidth=1.5;fontSize=10;verticalAlign=middle;" vertex="1" parent="1">
+      <mxGeometry x="240" y="272" width="175" height="48" as="geometry"/>
+    </mxCell>
+    <mxCell id="e_d_jam" value="Да" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=1;exitY=0.5;entryX=0;entryY=0.5;fontSize=9;fontStyle=2;" edge="1" source="b_D" target="b_jam" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- Возврат из задержки вниз к T_seg -->
+    <mxCell id="e_jam_e" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="b_jam" target="b_E" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="327" y="360"/>
+          <mxPoint x="215" y="360"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- Нет → вниз к T_seg -->
+    <mxCell id="e_d_e" value="Нет" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;fontSize=9;fontStyle=2;" edge="1" source="b_D" target="b_E" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- [E] T_seg -->
+    <mxCell id="b_E" value="T_seg = l/V_ij + A×C + R&lt;br&gt;(Формула модели, ГОСТ 19.701-90)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D6E4F0;strokeColor=#000000;strokeWidth=1.5;fontSize=10;verticalAlign=middle;" vertex="1" parent="1">
+      <mxGeometry x="15" y="337" width="200" height="45" as="geometry"/>
+    </mxCell>
+    <mxCell id="e_ef" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="b_E" target="b_F" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- [F] Ещё сегменты? (ромб) -->
+    <mxCell id="b_F" value="Ещё сегменты&lt;br&gt;(i &lt; n-1) ?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFF5CC;strokeColor=#000000;strokeWidth=1.5;fontSize=10;verticalAlign=middle;" vertex="1" parent="1">
+      <mxGeometry x="15" y="394" width="200" height="55" as="geometry"/>
+    </mxCell>
+
+    <!-- Да → петля назад к B (влево → вверх → вправо) -->
+    <mxCell id="e_f_b_yes" value="Да" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0;exitY=0.5;entryX=0;entryY=0.5;fontSize=9;fontStyle=2;" edge="1" source="b_F" target="b_B" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="-5" y="421"/>
+          <mxPoint x="-5" y="175"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- Нет → вниз к G -->
+    <mxCell id="e_fg" value="Нет" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;fontSize=9;fontStyle=2;" edge="1" source="b_F" target="b_G" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- [G] 2-opt -->
+    <mxCell id="b_G" value="2-opt: swap(i,j) if T_new &lt; T_best&lt;br&gt;O(n²)/iter, макс. 100 итераций&lt;br&gt;→ best_route, best_time" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D6E4F0;strokeColor=#000000;strokeWidth=1.5;fontSize=10;verticalAlign=middle;" vertex="1" parent="1">
+      <mxGeometry x="15" y="461" width="200" height="45" as="geometry"/>
+    </mxCell>
+    <mxCell id="e_gh" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="b_G" target="b_H" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- [H] Улучшение? (ромб) -->
+    <mxCell id="b_H" value="Улучшение&lt;br&gt;найдено?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFF5CC;strokeColor=#000000;strokeWidth=1.5;fontSize=10;verticalAlign=middle;" vertex="1" parent="1">
+      <mxGeometry x="15" y="518" width="200" height="55" as="geometry"/>
+    </mxCell>
+
+    <!-- Да → петля назад к G (вправо → вверх → влево) -->
+    <mxCell id="e_h_g_yes" value="Да" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=1;exitY=0.5;entryX=1;entryY=0.5;fontSize=9;fontStyle=2;" edge="1" source="b_H" target="b_G" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="240" y="545"/>
+          <mxPoint x="240" y="483"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- Нет → вниз к I -->
+    <mxCell id="e_hi" value="Нет" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;fontSize=9;fontStyle=2;" edge="1" source="b_H" target="b_I" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- [I] Финальный расчёт -->
+    <mxCell id="b_I" value="T = Σ T_seg_i  [мин]&lt;br&gt;ETA = t_отправления + T" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D6E4F0;strokeColor=#000000;strokeWidth=1.5;fontSize=10;verticalAlign=middle;" vertex="1" parent="1">
+      <mxGeometry x="15" y="585" width="200" height="45" as="geometry"/>
+    </mxCell>
+    <mxCell id="e_ij" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="b_I" target="b_J" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- [J] Вывод (ввод/вывод — параллелограмм) -->
+    <mxCell id="b_J" value="&lt;i&gt;Вывод: T [мин], best_route&lt;br&gt;pipeline_result.json&lt;/i&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;size=15;fillColor=#E2F0D9;strokeColor=#000000;strokeWidth=1.5;fontSize=10;verticalAlign=middle;" vertex="1" parent="1">
+      <mxGeometry x="15" y="642" width="200" height="42" as="geometry"/>
+    </mxCell>
+    <mxCell id="e_jk" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="b_J" target="b_end" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <!-- [K] КОНЕЦ (овал) -->
+    <mxCell id="b_end" value="&lt;b&gt;КОНЕЦ&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#1A3A5C;strokeColor=#000000;strokeWidth=2;fontColor=#FFFFFF;fontSize=11;fontStyle=1;verticalAlign=middle;" vertex="1" parent="1">
+      <mxGeometry x="15" y="696" width="200" height="20" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════════════
+         СРЕДНЯЯ ПАНЕЛЬ — контекст (x=440)
+         ══════════════════════════════════ -->
+
+    <!-- Рамка контекста -->
+    <mxCell id="ctx_bg" value="" style="rounded=1;fillColor=#F7FBFF;strokeColor=#AAAAAA;strokeWidth=1;dashed=1;dashPattern=8 4;" vertex="1" parent="1">
+      <mxGeometry x="432" y="44" width="360" height="395" as="geometry"/>
+    </mxCell>
+    <mxCell id="ctx_title" value="&lt;b&gt;Параллельный контекст (кэши и данные)&lt;/b&gt;" style="text;html=1;fontSize=9;fontColor=#1A3A5C;" vertex="1" parent="1">
+      <mxGeometry x="438" y="50" width="348" height="18" as="geometry"/>
+    </mxCell>
+
+    <!-- Блоки контекста -->
+    <mxCell id="ctx1" value="surface_cache[key]&lt;br&gt;Есть → использовать кэш&lt;br&gt;Нет → запустить Surface Analyzer (XGBoost)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D6E4F0;strokeColor=#000000;strokeWidth=1;fontSize=9;verticalAlign=middle;" vertex="1" parent="1">
+      <mxGeometry x="440" y="72" width="348" height="48" as="geometry"/>
+    </mxCell>
+    <mxCell id="ctx2" value="weather_cache[key]&lt;br&gt;Есть → использовать кэш&lt;br&gt;Нет → запрос Open-Meteo API" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D6E4F0;strokeColor=#000000;strokeWidth=1;fontSize=9;verticalAlign=middle;" vertex="1" parent="1">
+      <mxGeometry x="440" y="132" width="348" height="48" as="geometry"/>
+    </mxCell>
+    <mxCell id="ctx3" value="NZTA исторические данные&lt;br&gt;2013–2022, 2042 сенсора&lt;br&gt;get_historical_travel_time(road_id, hour, day)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D6E4F0;strokeColor=#000000;strokeWidth=1;fontSize=9;verticalAlign=middle;" vertex="1" parent="1">
+      <mxGeometry x="440" y="192" width="348" height="48" as="geometry"/>
+    </mxCell>
+    <mxCell id="ctx4" value="Константы модели&lt;br&gt;police_distance_km = 10&lt;br&gt;base_accident_risk = 0.003" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D6E4F0;strokeColor=#000000;strokeWidth=1;fontSize=9;verticalAlign=middle;" vertex="1" parent="1">
+      <mxGeometry x="440" y="252" width="348" height="48" as="geometry"/>
+    </mxCell>
+    <mxCell id="ctx5" value="K_surf: asphalt_good=1.0, damaged=0.75, gravel=0.85&lt;br&gt;dirt=0.70, sand=0.60&lt;br&gt;K_weather: fine=1.0, rain=0.8, heavy=0.65" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D6E4F0;strokeColor=#000000;strokeWidth=1;fontSize=9;verticalAlign=middle;" vertex="1" parent="1">
+      <mxGeometry x="440" y="312" width="348" height="48" as="geometry"/>
+    </mxCell>
+    <mxCell id="ctx6" value="K_time: peak=0.75 (7–9ч, 16–18ч)&lt;br&gt;day=1.0 (6–22ч)&lt;br&gt;night=1.1 (&lt;6ч или &gt;22ч)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D6E4F0;strokeColor=#000000;strokeWidth=1;fontSize=9;verticalAlign=middle;" vertex="1" parent="1">
+      <mxGeometry x="440" y="372" width="348" height="48" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════════════
+         ПРАВАЯ ПАНЕЛЬ — формула + шкала
+         x=820
+         ══════════════════════════════════ -->
+
+    <!-- Рамка формулы -->
+    <mxCell id="form_bg" value="" style="rounded=1;fillColor=#FFFDF0;strokeColor=#1A3A5C;strokeWidth=1.5;" vertex="1" parent="1">
+      <mxGeometry x="820" y="44" width="290" height="230" as="geometry"/>
+    </mxCell>
+    <mxCell id="form_title" value="&lt;b&gt;Основная формула&lt;/b&gt;" style="text;html=1;fontSize=9;fontColor=#1A3A5C;" vertex="1" parent="1">
+      <mxGeometry x="828" y="50" width="274" height="18" as="geometry"/>
+    </mxCell>
+    <mxCell id="form_main" value="&lt;b&gt;&lt;font style=&quot;font-size:20px;&quot; color=&quot;#1A3A5C&quot;&gt;T = l/v + A·C + p·t&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=center;" vertex="1" parent="1">
+      <mxGeometry x="820" y="72" width="290" height="32" as="geometry"/>
+    </mxCell>
+    <mxCell id="form_desc" value="&lt;b&gt;l/v&lt;/b&gt;  — чистое время движения&lt;br&gt;&lt;b&gt;A·C&lt;/b&gt;  — задержка от пробок&lt;br&gt;&lt;b&gt;p·t&lt;/b&gt;  — ожидаемая задержка ДТП" style="text;html=1;fontSize=10;align=left;" vertex="1" parent="1">
+      <mxGeometry x="828" y="108" width="274" height="58" as="geometry"/>
+    </mxCell>
+    <mxCell id="form_v" value="&lt;i&gt;V_ij = V₀ × K_surf × K_weather × K_time&lt;/i&gt;" style="text;html=1;fontSize=9;fontColor=#444444;align=left;" vertex="1" parent="1">
+      <mxGeometry x="828" y="168" width="274" height="20" as="geometry"/>
+    </mxCell>
+    <mxCell id="form_r" value="&lt;i&gt;R = p(accident) × clearance_time&lt;/i&gt;" style="text;html=1;fontSize=9;fontColor=#444444;align=left;" vertex="1" parent="1">
+      <mxGeometry x="828" y="188" width="274" height="20" as="geometry"/>
+    </mxCell>
+    <mxCell id="form_eta" value="&lt;i&gt;ETA = t_отправления + T&lt;/i&gt;" style="text;html=1;fontSize=9;fontColor=#444444;align=left;" vertex="1" parent="1">
+      <mxGeometry x="828" y="208" width="274" height="20" as="geometry"/>
+    </mxCell>
+    <mxCell id="form_note" value="ГОСТ 19.701-90 — схема алгоритмов" style="text;html=1;fontSize=8;fontColor=#888888;fontStyle=2;align=center;" vertex="1" parent="1">
+      <mxGeometry x="828" y="248" width="274" height="18" as="geometry"/>
+    </mxCell>
+
+    <!-- Рамка speed_factor -->
+    <mxCell id="sf_bg" value="" style="rounded=1;fillColor=#F0FFF0;strokeColor=#2e7d32;strokeWidth=1.5;" vertex="1" parent="1">
+      <mxGeometry x="820" y="284" width="290" height="375" as="geometry"/>
+    </mxCell>
+    <mxCell id="sf_title" value="&lt;b&gt;speed_factor по типу покрытия&lt;/b&gt;" style="text;html=1;fontSize=9;fontColor=#2e7d32;" vertex="1" parent="1">
+      <mxGeometry x="828" y="290" width="274" height="18" as="geometry"/>
+    </mxCell>
+
+    <!-- Полосы speed_factor -->
+    <!-- asphalt_good -->
+    <mxCell id="sf1_bar" value="&lt;b&gt;&lt;font color=&quot;#FFFFFF&quot;&gt;asphalt_good&lt;/font&gt;&lt;/b&gt;" style="rounded=0;fillColor=#1a9641;strokeColor=#888888;strokeWidth=0.5;fontSize=9;" vertex="1" parent="1">
+      <mxGeometry x="828" y="314" width="160" height="38" as="geometry"/>
+    </mxCell>
+    <mxCell id="sf1_val" value="× 1.00" style="text;html=1;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="994" y="322" width="108" height="22" as="geometry"/>
+    </mxCell>
+    <!-- concrete -->
+    <mxCell id="sf2_bar" value="&lt;b&gt;&lt;font color=&quot;#FFFFFF&quot;&gt;concrete&lt;/font&gt;&lt;/b&gt;" style="rounded=0;fillColor=#74c476;strokeColor=#888888;strokeWidth=0.5;fontSize=9;" vertex="1" parent="1">
+      <mxGeometry x="828" y="360" width="160" height="38" as="geometry"/>
+    </mxCell>
+    <mxCell id="sf2_val" value="× 0.95" style="text;html=1;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="994" y="368" width="108" height="22" as="geometry"/>
+    </mxCell>
+    <!-- gravel -->
+    <mxCell id="sf3_bar" value="&lt;b&gt;&lt;font color=&quot;#FFFFFF&quot;&gt;gravel&lt;/font&gt;&lt;/b&gt;" style="rounded=0;fillColor=#fdae61;strokeColor=#888888;strokeWidth=0.5;fontSize=9;" vertex="1" parent="1">
+      <mxGeometry x="828" y="406" width="160" height="38" as="geometry"/>
+    </mxCell>
+    <mxCell id="sf3_val" value="× 0.85" style="text;html=1;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="994" y="414" width="108" height="22" as="geometry"/>
+    </mxCell>
+    <!-- asphalt_damaged -->
+    <mxCell id="sf4_bar" value="&lt;b&gt;&lt;font color=&quot;#FFFFFF&quot;&gt;asphalt_dmg&lt;/font&gt;&lt;/b&gt;" style="rounded=0;fillColor=#f46d43;strokeColor=#888888;strokeWidth=0.5;fontSize=9;" vertex="1" parent="1">
+      <mxGeometry x="828" y="452" width="160" height="38" as="geometry"/>
+    </mxCell>
+    <mxCell id="sf4_val" value="× 0.75" style="text;html=1;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="994" y="460" width="108" height="22" as="geometry"/>
+    </mxCell>
+    <!-- dirt -->
+    <mxCell id="sf5_bar" value="&lt;b&gt;&lt;font color=&quot;#FFFFFF&quot;&gt;dirt&lt;/font&gt;&lt;/b&gt;" style="rounded=0;fillColor=#d73027;strokeColor=#888888;strokeWidth=0.5;fontSize=9;" vertex="1" parent="1">
+      <mxGeometry x="828" y="498" width="160" height="38" as="geometry"/>
+    </mxCell>
+    <mxCell id="sf5_val" value="× 0.70" style="text;html=1;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="994" y="506" width="108" height="22" as="geometry"/>
+    </mxCell>
+    <!-- sand -->
+    <mxCell id="sf6_bar" value="&lt;b&gt;&lt;font color=&quot;#FFFFFF&quot;&gt;sand&lt;/font&gt;&lt;/b&gt;" style="rounded=0;fillColor=#a50026;strokeColor=#888888;strokeWidth=0.5;fontSize=9;" vertex="1" parent="1">
+      <mxGeometry x="828" y="544" width="160" height="38" as="geometry"/>
+    </mxCell>
+    <mxCell id="sf6_val" value="× 0.60" style="text;html=1;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="994" y="552" width="108" height="22" as="geometry"/>
+    </mxCell>
+
+    <!-- Пояснение шкалы -->
+    <mxCell id="sf_note" value="Скорость V = V₀ × speed_factor&lt;br&gt;Чем хуже покрытие — тем ниже коэффициент" style="text;html=1;fontSize=8;fontColor=#555555;align=center;" vertex="1" parent="1">
+      <mxGeometry x="828" y="590" width="274" height="34" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════════════
+         ЛЕГЕНДА (правый верхний угол)
+         ══════════════════════════════════ -->
+    <mxCell id="leg_bg" value="" style="rounded=1;fillColor=#F9F9F9;strokeColor=#CCCCCC;strokeWidth=1;" vertex="1" parent="1">
+      <mxGeometry x="820" y="634" width="290" height="80" as="geometry"/>
+    </mxCell>
+    <mxCell id="leg_title" value="&lt;b&gt;Обозначения (ГОСТ 19.701-90)&lt;/b&gt;" style="text;html=1;fontSize=8;fontColor=#1A3A5C;" vertex="1" parent="1">
+      <mxGeometry x="826" y="638" width="278" height="14" as="geometry"/>
+    </mxCell>
+    <mxCell id="leg_t1" value="" style="ellipse;fillColor=#1A3A5C;strokeColor=#000000;strokeWidth=1;" vertex="1" parent="1"><mxGeometry x="826" y="655" width="36" height="16" as="geometry"/></mxCell>
+    <mxCell id="leg_t1l" value="— Начало/Конец" style="text;html=1;fontSize=8;" vertex="1" parent="1"><mxGeometry x="866" y="655" width="110" height="16" as="geometry"/></mxCell>
+    <mxCell id="leg_t2" value="" style="rounded=0;fillColor=#D6E4F0;strokeColor=#000000;strokeWidth=1;" vertex="1" parent="1"><mxGeometry x="826" y="675" width="36" height="16" as="geometry"/></mxCell>
+    <mxCell id="leg_t2l" value="— Процесс" style="text;html=1;fontSize=8;" vertex="1" parent="1"><mxGeometry x="866" y="675" width="80" height="16" as="geometry"/></mxCell>
+    <mxCell id="leg_t3" value="" style="rhombus;fillColor=#FFF5CC;strokeColor=#000000;strokeWidth=1;" vertex="1" parent="1"><mxGeometry x="980" y="652" width="36" height="22" as="geometry"/></mxCell>
+    <mxCell id="leg_t3l" value="— Решение" style="text;html=1;fontSize=8;" vertex="1" parent="1"><mxGeometry x="1020" y="655" width="80" height="16" as="geometry"/></mxCell>
+    <mxCell id="leg_t4" value="" style="shape=parallelogram;perimeter=parallelogramPerimeter;fixedSize=1;size=8;fillColor=#E2F0D9;strokeColor=#000000;strokeWidth=1;" vertex="1" parent="1"><mxGeometry x="980" y="675" width="36" height="16" as="geometry"/></mxCell>
+    <mxCell id="leg_t4l" value="— Ввод/Вывод" style="text;html=1;fontSize=8;fontStyle=2;" vertex="1" parent="1"><mxGeometry x="1020" y="675" width="90" height="16" as="geometry"/></mxCell>
+    <mxCell id="leg_conn_circ" value="1" style="ellipse;fillColor=#FFD700;strokeColor=#000000;strokeWidth=1.5;fontSize=8;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="826" y="695" width="22" height="22" as="geometry"/></mxCell>
+    <mxCell id="leg_conn_t" value="— Соединитель переноса" style="text;html=1;fontSize=8;" vertex="1" parent="1"><mxGeometry x="852" y="698" width="160" height="16" as="geometry"/></mxCell>
+
+  </root>
+</mxGraphModel>

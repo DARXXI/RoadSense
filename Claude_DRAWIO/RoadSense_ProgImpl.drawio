@@ -1,0 +1,286 @@
+<mxGraphModel dx="1600" dy="900" grid="0" gridSize="10" guides="1" tooltips="1" connect="0" arrows="1" fold="0" page="1" pageScale="1" pageWidth="1400" pageHeight="800" math="0" shadow="0" background="#FFFFFF">
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+
+    <!-- ЗАГОЛОВОК -->
+    <mxCell id="title" value="&lt;b&gt;Программная реализация системы RoadSense&lt;br&gt;в виде комплекса программных средств&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;fontSize=16;fontColor=#000000;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+      <mxGeometry x="250" y="12" width="900" height="48" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════
+         ВХОДНОЙ БЛОК (слева)
+         ══════════════════════════ -->
+    <mxCell id="in_gps" value="GPS-трек маршрута&lt;br&gt;(.gpx файл)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="22" y="240" width="145" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════
+         БОЛЬШАЯ ПУНКТИРНАЯ РАМКА
+         ══════════════════════════ -->
+    <mxCell id="sys_box" value="" style="rounded=2;arcSize=3;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;strokeWidth=1.5;dashed=1;dashPattern=8 5;" vertex="1" parent="1">
+      <mxGeometry x="188" y="72" width="1010" height="658" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════
+         ЛЕВАЯ КОЛОНКА ВНУТРИ РАМКИ
+         — Модуль загрузки снимков (вверху)
+         — Пунктирная рамка «Внешние источники»
+         — Обученная модель (внизу)
+         ══════════════════════════════════════════════ -->
+
+    <!-- Модуль 1: Загрузчик спутниковых снимков -->
+    <mxCell id="mod1" value="Программный модуль&lt;br&gt;загрузки спутниковых&lt;br&gt;снимков&lt;br&gt;(satellite_downloader.py)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="218" y="118" width="195" height="78" as="geometry"/>
+    </mxCell>
+
+    <!-- Пунктирная рамка внешних источников -->
+    <mxCell id="src_box" value="" style="rounded=1;arcSize=4;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;strokeWidth=1;dashed=1;dashPattern=6 4;" vertex="1" parent="1">
+      <mxGeometry x="206" y="230" width="220" height="310" as="geometry"/>
+    </mxCell>
+    <mxCell id="src_lbl" value="Внешние источники данных" style="text;html=1;fontSize=9;fontColor=#000000;align=center;" vertex="1" parent="1">
+      <mxGeometry x="216" y="236" width="200" height="16" as="geometry"/>
+    </mxCell>
+
+    <!-- LINZ API -->
+    <mxCell id="src_linz" value="LINZ API&lt;br&gt;(спутниковые тайлы, zoom 18–19)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=9;" vertex="1" parent="1">
+      <mxGeometry x="216" y="258" width="200" height="38" as="geometry"/>
+    </mxCell>
+
+    <!-- Open-Meteo -->
+    <mxCell id="src_meteo" value="Open-Meteo API&lt;br&gt;(осадки, температура, ветер)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=9;" vertex="1" parent="1">
+      <mxGeometry x="216" y="306" width="200" height="38" as="geometry"/>
+    </mxCell>
+
+    <!-- NZTA Traffic -->
+    <mxCell id="src_nzta" value="NZTA Traffic API&lt;br&gt;(плотность потока, сенсоры)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=9;" vertex="1" parent="1">
+      <mxGeometry x="216" y="354" width="200" height="38" as="geometry"/>
+    </mxCell>
+
+    <!-- Исторические данные НЗТА -->
+    <mxCell id="src_hist" value="Исторические данные НЗТА&lt;br&gt;(2013–2022, 2042 датчика)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=9;" vertex="1" parent="1">
+      <mxGeometry x="216" y="402" width="200" height="38" as="geometry"/>
+    </mxCell>
+
+    <!-- Обученная модель XGBoost -->
+    <mxCell id="src_model" value="Обученная модель&lt;br&gt;классификации покрытия&lt;br&gt;(road_surface_xgboost.pkl)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="218" y="572" width="195" height="60" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════
+         ЦЕНТРАЛЬНАЯ КОЛОНКА
+         ══════════════════════════════════════════════ -->
+
+    <!-- Модуль 2: Анализ покрытия -->
+    <mxCell id="mod2" value="Программный модуль&lt;br&gt;анализа дорожного&lt;br&gt;покрытия&lt;br&gt;(surface_analyzer.py)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="510" y="118" width="195" height="78" as="geometry"/>
+    </mxCell>
+
+    <!-- Модуль 3: Погода и трафик -->
+    <mxCell id="mod3" value="Программный модуль&lt;br&gt;получения данных&lt;br&gt;о погоде и трафике&lt;br&gt;(traffic_weather_api.py)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="510" y="306" width="195" height="78" as="geometry"/>
+    </mxCell>
+
+    <!-- Модуль 6: Семантическая сегментация (road_analyzer) -->
+    <mxCell id="mod6" value="Программный модуль&lt;br&gt;семантической сегментации&lt;br&gt;дорожного полотна&lt;br&gt;(road_analyzer.py)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="510" y="500" width="195" height="78" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════
+         ПРАВАЯ КОЛОНКА
+         ══════════════════════════════════════════════ -->
+
+    <!-- Модуль 4: Оптимизатор маршрута -->
+    <mxCell id="mod4" value="Программный модуль&lt;br&gt;оптимизации маршрута&lt;br&gt;и расчёта времени&lt;br&gt;(route_optimizer.py)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="800" y="280" width="195" height="78" as="geometry"/>
+    </mxCell>
+
+    <!-- Модуль 5: Главный конвейер -->
+    <mxCell id="mod5" value="Программный модуль&lt;br&gt;главного конвейера&lt;br&gt;обработки&lt;br&gt;(main_pipeline.py)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="800" y="480" width="195" height="78" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════
+         ВЫХОДНОЙ БЛОК (справа)
+         ══════════════════════════ -->
+    <mxCell id="out_eta" value="&lt;b&gt;Расчётное время&lt;br&gt;прибытия (ВПП)&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="1232" y="380" width="130" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════
+         СТРЕЛКИ
+         ══════════════════════════════════════════════ -->
+
+    <!-- GPS-трек → Модуль загрузки снимков -->
+    <mxCell id="e_gps_m1" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" source="in_gps" target="mod1" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- GPS-трек → Модуль погоды (координаты) -->
+    <mxCell id="e_gps_m3" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=1;exitY=0.7;entryX=0;entryY=0.2;" edge="1" source="in_gps" target="mod3" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="175" y="275"/>
+          <mxPoint x="175" y="331"/>
+          <mxPoint x="510" y="331"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- LINZ → Модуль загрузки (загрузка тайлов) -->
+    <mxCell id="e_linz_m1" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1;exitX=0.5;exitY=0;entryX=0.3;entryY=1;" edge="1" source="src_linz" target="mod1" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="280" y="248"/>
+          <mxPoint x="280" y="196"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="lbl_linz" value="загрузка тайлов" style="text;html=1;fontSize=8;fontStyle=2;align=center;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+      <mxGeometry x="220" y="212" width="110" height="14" as="geometry"/>
+    </mxCell>
+
+    <!-- Open-Meteo → Модуль погоды -->
+    <mxCell id="e_meteo_m3" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1;exitX=1;exitY=0.5;entryX=0;entryY=0.4;" edge="1" source="src_meteo" target="mod3" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="455" y="325"/>
+          <mxPoint x="455" y="337"/>
+          <mxPoint x="510" y="337"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="lbl_meteo" value="данные о погоде" style="text;html=1;fontSize=8;fontStyle=2;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+      <mxGeometry x="422" y="312" width="112" height="14" as="geometry"/>
+    </mxCell>
+
+    <!-- NZTA → Модуль погоды/трафика -->
+    <mxCell id="e_nzta_m3" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1;exitX=1;exitY=0.5;entryX=0;entryY=0.6;" edge="1" source="src_nzta" target="mod3" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="455" y="373"/>
+          <mxPoint x="455" y="355"/>
+          <mxPoint x="510" y="355"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="lbl_nzta" value="данные о трафике" style="text;html=1;fontSize=8;fontStyle=2;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+      <mxGeometry x="422" y="358" width="112" height="14" as="geometry"/>
+    </mxCell>
+
+    <!-- Исторические → Модуль погоды/трафика -->
+    <mxCell id="e_hist_m3" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1;exitX=1;exitY=0.5;entryX=0;entryY=0.8;" edge="1" source="src_hist" target="mod3" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="455" y="421"/>
+          <mxPoint x="455" y="368"/>
+          <mxPoint x="510" y="368"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="lbl_hist" value="исторические данные" style="text;html=1;fontSize=8;fontStyle=2;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+      <mxGeometry x="416" y="404" width="130" height="14" as="geometry"/>
+    </mxCell>
+
+    <!-- Обученная модель → Модуль анализа покрытия -->
+    <mxCell id="e_model_m2" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1;exitX=1;exitY=0.4;entryX=0;entryY=0.9;" edge="1" source="src_model" target="mod2" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="455" y="588"/>
+          <mxPoint x="455" y="186"/>
+          <mxPoint x="510" y="186"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="lbl_model" value="загрузка модели" style="text;html=1;fontSize=8;fontStyle=2;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+      <mxGeometry x="365" y="562" width="112" height="14" as="geometry"/>
+    </mxCell>
+
+    <!-- Модуль загрузки → Модуль анализа покрытия -->
+    <mxCell id="e_m1_m2" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" source="mod1" target="mod2" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="lbl_m1m2" value="спутниковые снимки&lt;br&gt;(PNG, мозаика 3×3)" style="text;html=1;fontSize=8;fontStyle=2;align=center;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+      <mxGeometry x="718" y="138" width="145" height="26" as="geometry"/>
+    </mxCell>
+
+    <!-- Модуль загрузки → Модуль сегментации -->
+    <mxCell id="e_m1_m6" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.2;entryY=0;" edge="1" source="mod1" target="mod6" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="340" y="220"/>
+          <mxPoint x="340" y="480"/>
+          <mxPoint x="549" y="480"/>
+          <mxPoint x="549" y="500"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="lbl_m1m6" value="снимки для&lt;br&gt;сегментации" style="text;html=1;fontSize=8;fontStyle=2;align=left;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+      <mxGeometry x="348" y="448" width="95" height="26" as="geometry"/>
+    </mxCell>
+
+    <!-- Модуль анализа покрытия → Модуль оптимизации (коэф. покрытия) -->
+    <mxCell id="e_m2_m4" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=1;exitY=0.3;entryX=0;entryY=0.2;" edge="1" source="mod2" target="mod4" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="760" y="141"/>
+          <mxPoint x="760" y="296"/>
+          <mxPoint x="800" y="296"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="lbl_m2m4" value="коэффициент скорости покрытия" style="text;html=1;fontSize=8;fontStyle=2;align=center;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+      <mxGeometry x="764" y="188" width="180" height="26" as="geometry"/>
+    </mxCell>
+
+    <!-- Модуль погоды → Модуль оптимизации -->
+    <mxCell id="e_m3_m4" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" source="mod3" target="mod4" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="lbl_m3m4" value="К_погода, К_время" style="text;html=1;fontSize=8;fontStyle=2;align=center;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+      <mxGeometry x="718" y="316" width="120" height="14" as="geometry"/>
+    </mxCell>
+
+    <!-- Модуль сегментации → Модуль оптимизации -->
+    <mxCell id="e_m6_m4" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=1;exitY=0.3;entryX=0;entryY=0.8;" edge="1" source="mod6" target="mod4" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="760" y="523"/>
+          <mxPoint x="760" y="342"/>
+          <mxPoint x="800" y="342"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="lbl_m6m4" value="тип покрытия (FCN ResNet50)" style="text;html=1;fontSize=8;fontStyle=2;align=center;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+      <mxGeometry x="570" y="420" width="175" height="14" as="geometry"/>
+    </mxCell>
+
+    <!-- Модуль оптимизации → Главный конвейер -->
+    <mxCell id="e_m4_m5" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="mod4" target="mod5" parent="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="lbl_m4m5" value="Т_сег, оптим. маршрут" style="text;html=1;fontSize=8;fontStyle=2;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+      <mxGeometry x="812" y="420" width="148" height="14" as="geometry"/>
+    </mxCell>
+
+    <!-- Главный конвейер → Расчётное время прибытия -->
+    <mxCell id="e_m5_out" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;strokeWidth=1.5;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" source="mod5" target="out_eta" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="1060" y="519"/>
+          <mxPoint x="1060" y="405"/>
+          <mxPoint x="1232" y="405"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="lbl_m5out" value="передача результата" style="text;html=1;fontSize=8;fontStyle=2;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+      <mxGeometry x="1064" y="454" width="130" height="14" as="geometry"/>
+    </mxCell>
+
+    <!-- Подпись вертикальная — загрузка данных -->
+    <mxCell id="side_lbl" value="Загрузка данных" style="text;html=1;fontSize=9;fontStyle=2;fontColor=#000000;align=center;rotation=-90;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+      <mxGeometry x="154" y="345" width="120" height="14" as="geometry"/>
+    </mxCell>
+
+  </root>
+</mxGraphModel>
